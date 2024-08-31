@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Land Use Change Tool</title>
+  <!-- Load ArcGIS API for JavaScript -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.27/"></script>
+  <style>
+    #viewDiv {
+      height: 600px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    #inputForm {
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    #results {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="viewDiv"></div>
+
+  <!-- Form for Land Use Input -->
+  <div id="inputForm">
+    <h3>Land Use Change Information</h3>
+    <label for="currentLandUse">Current Land Use:</label>
+    <select id="currentLandUse">
+      <option value="agriculture">Agriculture</option>
+      <option value="forest">Forest</option>
+      <option value="urban">Urban</option>
+      <option value="wetlands">Wetlands</option>
+      <option value="invasivePlants">Invasive Plants/Overgrown</option>
+      <option value="grassLawn">Grass Lawn</option>
+      <option value="bareSoil">Bare Soil</option>
+    </select><br><br>
+
+    <label for="futureLandUse">Future Land Use:</label>
+    <select id="futureLandUse">
+      <option value="forest">Forest</option>
+      <option value="wetlands">Wetlands</option> <!-- Corrected value from "wetland" to "wetlands" -->
+      <option value="urban">Urban</option>
+      <option value="garden">Garden</option>
+      <option value="prairieMeadow">Prairie/Meadow Restoration</option>
+      <option value="reforestation">Reforestation</option>
+    </select><br><br>
+
+    <button id="calculateBtn">Calculate Benefits</button>
+    <button id="exportBtn">Export as CSV</button>
+    <button id="exportGeoJSONBtn">Export as GeoJSON</button>
+    <div id="carbonSequestration">Carbon Sequestration Value</div>
+    <div id="stormwaterRetention">Stormwater Retention Value</div>
+    <div id="habitatScore">Habitat Score Value</div>
+
+
+    <!-- Results section -->
+    <div id="results">
+      <!-- This is where the calculation results will be displayed -->
+    </div>
+  </div>
+
+  <script src="landUseTool.js"></script> <!-- Link to your JavaScript file -->
+
+</body>
+</html>
