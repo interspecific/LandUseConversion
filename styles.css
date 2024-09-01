@@ -1,0 +1,67 @@
+/* Style for the view container */
+#viewDiv {
+    height: 600px; /* Ensure this height is enough for the map */
+    width: 70%; /* Ensure this width is enough for the map */
+    margin-bottom: 20px;
+    display: inline-block; /* Align side by side */
+    vertical-align: top; /* Align at the top */
+    position: relative; /* Ensure the container is positioned correctly */
+  }
+  
+  /* Style for the input form */
+  #inputForm {
+    width: 25%; /* Adjusted width */
+    display: inline-block; /* Align side by side */
+    vertical-align: top; /* Align at the top */
+    margin-left: 10px; /* Spacing */
+  }
+  
+  /* Style for the results section */
+  #results {
+    margin-top: 20px;
+    padding: 0px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  
+  /* Accordion container style */
+  .accordion-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 100%; /* Adjusted to fit the width of the form */
+  }
+  
+  /* Style for the accordion button */
+  .accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 0px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Style for the active accordion button */
+  .accordion.active, .accordion:hover {
+    background-color: #ddd;
+  }
+  
+  /* Style for the accordion panel */
+  .panel {
+    padding: 0px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  /* Optional: Add styles for panel content */
+  .panel p {
+    margin: 0px 0;
+  }
+  

@@ -6,6 +6,7 @@
   <!-- Load ArcGIS API for JavaScript -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.27/"></script>
+  <!-- Add custom styles -->
   <style>
     #viewDiv {
       height: 600px;
@@ -22,11 +23,109 @@
       border: 1px solid #ddd;
       background-color: #f9f9f9;
     }
+    /* Accordion container styles for horizontal layout */
+    .accordion-container {
+      display: flex; /* Use flexbox for horizontal alignment */
+      justify-content: space-between; /* Spread accordions evenly */
+      margin-bottom: 20px; /* Space between accordions and other content */
+    }
+    /* Accordion styles */
+    .accordion {
+      background-color: #f1f1f1;
+      color: #333;
+      cursor: pointer;
+      padding: 10px;
+      width: 22%; /* Set width to fit four buttons across */
+      border: none;
+      text-align: center; /* Center-align text */
+      outline: none;
+      font-size: 16px;
+      transition: background-color 0.2s ease;
+      margin-bottom: 0; /* Remove bottom margin */
+      margin-right: 5px; /* Add a small right margin */
+    }
+    .accordion.active,
+    .accordion:hover {
+      background-color: #ddd;
+    }
+    /* Panel styles */
+    .panel {
+      padding: 00px;
+      display: block;
+      width: 100%; /* Expand to the width of the container */
+      border: 1px solid #ddd;
+      border-top: none; /* No border on top to connect to button */
+      background-color: #f9f9f9;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    /* Panel container to make it full-width */
+    .panel-container {
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Map Div -->
   <div id="viewDiv"></div>
+
+  <!-- Accordion Section -->
+  <div class="accordion-container">
+    <!-- Accordion for Instructions -->
+    <button class="accordion">Instructions</button>
+    <!-- Accordion for How Can This Tool Be Used? -->
+    <button class="accordion">How Can This Tool Be Used?</button>    
+    <!-- Accordion for Why is this Important? -->
+    <button class="accordion">Why is this Important?</button>
+    <!-- Accordion for Resources -->
+    <button class="accordion">Supporting Research</button>
+  </div>
+
+  <!-- Panels Section -->
+  <div class="panel-container">
+    <!-- Panel for Instructions -->
+    <div class="panel">
+      <p>1. Select the current land use from the "Current Land Use" dropdown menu.</p>
+      <p>2. Choose the desired future land use from the "Future Land Use" dropdown menu.</p>
+      <p>3. Click the "Calculate Benefits" button to see the environmental benefits of the change.</p>
+      <p>4. Results will be displayed below the form, showing the estimated carbon sequestration, stormwater retention, and habitat quality changes.</p>
+      <p>5. Use the "Export as CSV" or "Export as GeoJSON" buttons to export the results if needed.</p>
+    </div>
+
+    <!-- Panel for How Can This Tool Be Used? -->
+    <div class="panel">
+      <p>This tool can be used by urban planners, environmental scientists, conservationists, and educators to analyze potential changes in land use and their environmental benefits.</p>
+      <p>It can also serve as an educational resource to raise awareness about the impact of land use on carbon sequestration, stormwater retention, and habitat quality.</p>
+    </div>
+
+
+    <!-- Panel for Why is this Important? -->
+    <div class="panel">
+      <p>This tool is crucial for understanding the ecological and environmental benefits of converting different types of land use. For example, converting agricultural land to forest can significantly increase carbon sequestration and improve habitat quality.</p>
+      <p>Understanding these benefits can help guide sustainable development, conservation efforts, and policy-making decisions.</p>
+    </div>
+
+
+
+    <!-- Panel for Resources -->
+<div class="panel">
+  <p>Here you can provide links to external resources, articles, or datasets that are relevant to land use changes and their environmental impacts.</p>
+  <ul>
+    <li><a href="https://www.epa.gov/eco-research/ecosystem-services-research" target="_blank">EPA Ecosystem Services Research Program</a></li>
+    <li><a href="https://www.fs.usda.gov/" target="_blank">USDA Forest Service</a></li>
+    <li><a href="https://coast.noaa.gov/" target="_blank">NOAA Office for Coastal Management</a></li>
+    <li><a href="https://www.mrlc.gov/" target="_blank">National Land Cover Database (NLCD)</a></li>
+    <li><a href="https://www.unep.org/resources/ecosystem-restoration" target="_blank">UNEP Ecosystem Restoration Resources</a></li>
+    <li><a href="https://www.nature.org/en-us/what-we-do/our-insights/climate-change-reports/" target="_blank">The Nature Conservancy Climate Change and Ecosystems</a></li>
+    <li><a href="https://scholar.google.com/scholar?hl=en&as_sdt=0%2C15&q=carbon+sequestration+restoration&btnG=" target="_blank">Google Scholar</a></li>
+    <li><a href="https://www.jstor.org/" target="_blank">JSTOR</a></li>
+    <li><a href="https://www.sciencedirect.com/" target="_blank">ScienceDirect</a></li>
+  </ul>
+</div>    
+</div>
+
 
   <!-- Form for Land Use Input -->
   <div id="inputForm">
@@ -45,7 +144,7 @@
     <label for="futureLandUse">Future Land Use:</label>
     <select id="futureLandUse">
       <option value="forest">Forest</option>
-      <option value="wetlands">Wetlands</option> <!-- Corrected value from "wetland" to "wetlands" -->
+      <option value="wetlands">Wetlands</option>
       <option value="urban">Urban</option>
       <option value="garden">Garden</option>
       <option value="prairieMeadow">Prairie/Meadow Restoration</option>
@@ -59,14 +158,38 @@
     <div id="stormwaterRetention">Stormwater Retention Value</div>
     <div id="habitatScore">Habitat Score Value</div>
 
-
     <!-- Results section -->
     <div id="results">
       <!-- This is where the calculation results will be displayed -->
     </div>
   </div>
 
-  <script src="landUseTool.js"></script> <!-- Link to your JavaScript file -->
+  <!-- Include JavaScript for Accordion Functionality -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var acc = document.getElementsByClassName("accordion");
+      var allPanels = document.getElementsByClassName("panel");
+      for (var i = 0; i < acc.length; i++) {
+        acc[i].index = i;  // Assign an index to each accordion button
+        acc[i].addEventListener("click", function() {
+          var panel = allPanels[this.index];  // Use the index to find the corresponding panel
+          this.classList.toggle("active");
+          if (panel.style.maxHeight) {
+            panel.style.maxHeight = null; // Collapse panel
+          } else {
+            // Collapse all other panels
+            for (var j = 0; j < allPanels.length; j++) {
+              allPanels[j].style.maxHeight = null;
+            }
+            panel.style.maxHeight = panel.scrollHeight + "px"; // Expand the current panel
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Include JavaScript for Land Use Tool -->
+  <script src="landUseTool.js"></script>
 
 </body>
 </html>

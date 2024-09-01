@@ -42,8 +42,8 @@ require([
   const imageryLayer = new ImageryLayer({
     url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer",
     title: "Indiana Current Imagery",
-    opacity: 0.7,
-    visible: false,
+    opacity: 0.9,
+    visible: true,
     format: "jpgpng"
   });
   map.add(imageryLayer);
@@ -171,8 +171,8 @@ require([
     const benefits = calculateBenefits(currentLandUse, futureLandUse);
 
     // Determine whether the changes are increases or decreases
-    const carbonChangeType = benefits.carbonSequestrationChange >= 0 ? "increase" : "decrease";
-    const stormwaterChangeType = benefits.stormwaterRetentionChange >= 0 ? "increase" : "decrease";
+    const carbonChangeType = benefits.carbonSequestrationChange >= 0 ? "sequestered" : "released";
+    const stormwaterChangeType = benefits.stormwaterRetentionChange >= 0 ? "retained" : "released as";
     const habitatChangeType = benefits.habitatScoreChange >= 0 ? "improve" : "degrade";
 
     // Display the results
@@ -180,8 +180,8 @@ require([
       <h4>Environmental Benefits:</h4>
       <p>By converting the existing "${currentLandUse}" land use to "${futureLandUse}" land use, approximately:</p>
       <ul>
-        <li>${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will be ${carbonChangeType}ed.</li>
-        <li>${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters of water will be ${stormwaterChangeType}d.</li>
+        <li>${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will be ${carbonChangeType}.</li>
+        <li>${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters of water will be ${stormwaterChangeType}.</li>
         <li>The habitat quality will ${habitatChangeType} by ${Math.abs(benefits.habitatScoreChange.toFixed(2))} units.</li>
       </ul>
     `;
