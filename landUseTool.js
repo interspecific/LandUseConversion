@@ -30,7 +30,7 @@ require([
   const measurement = new Measurement({
     view: view
   });
-  view.ui.add(measurement, "bottom-right");
+  view.ui.add(measurement, "top-right");
 
 // Add a Layer List widget to control the visibility of layers
 const layerList = new LayerList({
@@ -64,7 +64,7 @@ view.ui.add(layerList.container, {
 
   // Add the Sketch widget after the Search widget
   view.ui.add(sketch, {
-    position: "bottom-right"
+    position: "top-right"
   });
 
 });
