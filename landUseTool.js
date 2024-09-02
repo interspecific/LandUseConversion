@@ -22,70 +22,22 @@ require([
     zoom: 7
   });
 
-  // Add a GraphicsLayer for drawing
-  const graphicsLayer = new GraphicsLayer();
-  map.add(graphicsLayer);
-  
   // Create and add the Measurement widget
   const measurement = new Measurement({
     view: view
   });
-  view.ui.add(measurement, "top-right");
+  view.ui.add(measurement, "bottom-right");
 
-// Add a Layer List widget to control the visibility of layers
-const layerList = new LayerList({
-  view: view,
-  container: document.createElement("div") // Create a container for the widget
-});
-
-// Add the container to the view's UI, applying a custom CSS class
-layerList.container.classList.add("custom-layerlist"); // Add a custom CSS class
-view.ui.add(layerList.container, {
-  position: "top-left"
-});
-
-
-  // Create the Search widget
+  // Create and add the Search widget
   const search = new Search({
     view: view
   });
+  view.ui.add(search, "top-right");
 
-  // Add the Search widget first
-  view.ui.add(search, {
-    position: "top-right"
-  });
+  // Add a GraphicsLayer for drawing
+  const graphicsLayer = new GraphicsLayer();
+  map.add(graphicsLayer);
 
-  // Create a Sketch widget for drawing polygons
-  const sketch = new Sketch({
-    layer: graphicsLayer,
-    view: view,
-    creationMode: "update"
-  });
-
-  // Add the Sketch widget after the Search widget
-  view.ui.add(sketch, {
-    position: "top-right"
-  });
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   // Add various layers with visibility set to false
   const imageryLayer = new ImageryLayer({
     url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer",
@@ -140,6 +92,26 @@ view.ui.add(layerList.container, {
     }
   });
   map.add(nhdStreamsLayer);
+
+  // Create a Sketch widget for drawing polygons
+  const sketch = new Sketch({
+    layer: graphicsLayer,
+    view: view,
+    creationMode: "update"
+  });
+  view.ui.add(sketch, "top-right");
+
+// Add a Layer List widget to control the visibility of layers
+const layerList = new LayerList({
+  view: view,
+  container: document.createElement("div") // Create a container for the widget
+});
+
+// Add the container to the view's UI, applying a custom CSS class
+layerList.container.classList.add("custom-layerlist"); // Add a custom CSS class
+view.ui.add(layerList.container, {
+  position: "top-left"
+});
 
 
   // Sequestration rates (tons per hectare per year)
