@@ -28,15 +28,48 @@ require([
   });
   view.ui.add(measurement, "bottom-right");
 
-  // Create and add the Search widget
+    // Create a Sketch widget for drawing polygons
+  const sketch = new Sketch({
+    layer: graphicsLayer,
+    view: view,
+    creationMode: "update"
+  });
+
+  // Add the Sketch widget to the top-right corner
+  view.ui.add(sketch, {
+    position: "top-right",
+    index: 0 // Lower index so it appears above the Search widget
+  });
+
+  // Create the Search widget
   const search = new Search({
     view: view
   });
-  view.ui.add(search, "top-right");
+
+  // Add the Search widget below the Sketch widget
+  view.ui.add(search, {
+    position: "top-right",
+    index: 1 // Higher index so it appears below the Sketch widget
+  });
+
+});
+
 
   // Add a GraphicsLayer for drawing
   const graphicsLayer = new GraphicsLayer();
   map.add(graphicsLayer);
+
+// Add a Layer List widget to control the visibility of layers
+const layerList = new LayerList({
+  view: view,
+  container: document.createElement("div") // Create a container for the widget
+});
+
+// Add the container to the view's UI, applying a custom CSS class
+layerList.container.classList.add("custom-layerlist"); // Add a custom CSS class
+view.ui.add(layerList.container, {
+  position: "top-left"
+});
 
   // Add various layers with visibility set to false
   const imageryLayer = new ImageryLayer({
@@ -92,26 +125,6 @@ require([
     }
   });
   map.add(nhdStreamsLayer);
-
-  // Create a Sketch widget for drawing polygons
-  const sketch = new Sketch({
-    layer: graphicsLayer,
-    view: view,
-    creationMode: "update"
-  });
-  view.ui.add(sketch, "top-right");
-
-// Add a Layer List widget to control the visibility of layers
-const layerList = new LayerList({
-  view: view,
-  container: document.createElement("div") // Create a container for the widget
-});
-
-// Add the container to the view's UI, applying a custom CSS class
-layerList.container.classList.add("custom-layerlist"); // Add a custom CSS class
-view.ui.add(layerList.container, {
-  position: "top-left"
-});
 
 
   // Sequestration rates (tons per hectare per year)
