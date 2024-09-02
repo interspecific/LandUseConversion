@@ -38,7 +38,7 @@ require([
   // Add the Sketch widget to the top-right corner
   view.ui.add(sketch, {
     position: "top-right",
-    index: 0 // Lower index so it appears above the Search widget
+    index: 1 // higher index so it appears above the Search widget
   });
 
   // Create the Search widget
@@ -49,7 +49,7 @@ require([
   // Add the Search widget below the Sketch widget
   view.ui.add(search, {
     position: "top-right",
-    index: 1 // Higher index so it appears below the Sketch widget
+    index: 0 // lower index so it appears below the Sketch widget
   });
 
 });
