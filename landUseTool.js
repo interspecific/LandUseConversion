@@ -64,7 +64,7 @@ view.ui.add(layerList.container, {
 
   // Add the Sketch widget after the Search widget
   view.ui.add(sketch, {
-    position: "top-right"
+    position: "bottom-right"
   });
 
 });
