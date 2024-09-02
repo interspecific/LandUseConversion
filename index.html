@@ -8,14 +8,25 @@
   <script src="https://js.arcgis.com/4.27/"></script>
   <!-- Add custom styles -->
   <style>
+
+    /* Custom style for the LayerList widget */
+    .custom-layerlist {
+      width: 100px;
+      height: 250px;
+      overflow-y: auto;
+      background-color: #333;
+      border: 1px solid #333;
+      padding: 8px;
+    }
+
     #viewDiv {
       height: 600px;
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     #inputForm {
       max-width: 400px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     #results {
       margin-top: 20px;
@@ -64,7 +75,112 @@
     .panel-container {
       width: 100%;
     }
+
+    /* General body styles for dark theme */
+body {
+  background-color: #121212; /* Very dark grey (almost black) */
+  color: #E0E0E0; /* Light grey for text */
+  font-family: Arial, sans-serif;
+}
+
+/* Style for the map container */
+#viewDiv {
+  height: 600px;
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: #1E1E1E; /* Dark grey background */
+  border: 1px solid #333; /* Slightly lighter grey border */
+}
+
+/* Form input styles */
+#inputForm {
+  background-color: #1E1E1E; /* Dark grey background */
+  color: #E0E0E0; /* Light grey text */
+  padding: 20px;
+  border: 1px solid #333; /* Border matching the theme */
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+/* Button styles */
+button {
+  background-color: #2E7D32; /* Forest green background */
+  color: #FFFFFF; /* White text */
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1B5E20; /* Darker forest green on hover */
+}
+
+/* Results box */
+#results {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #333;
+  background-color: #1E1E1E;
+  color: #E0E0E0;
+}
+
+/* Accordion styles */
+.accordion {
+  background-color: #2E2E2E; /* Dark grey for accordion buttons */
+  color: #FFFFFF;
+  padding: 10px;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-bottom: 5px;
+}
+
+.accordion.active,
+.accordion:hover {
+  background-color: #333333; /* Slightly lighter grey on hover/active */
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: #1E1E1E;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  border: 1px solid #333; /* Matches the dark theme */
+}
+
+/* Links in the panel */
+.panel a {
+  color: #2E7D32; /* Forest green for links */
+}
+
+.panel a:hover {
+  color: #1B5E20; /* Darker forest green on hover */
+}
+
+/* Additional dark theme styles */
+h3, h4 {
+  color: #FFFFFF; /* White headers */
+}
+
+label {
+  color: #B0B0B0; /* Light grey labels */
+}
+
+select {
+  background-color: #2E2E2E; /* Dark grey dropdown */
+  color: #E0E0E0; /* Light grey text */
+  border: 1px solid #333;
+}
+
+
   </style>
+  
+  
 </head>
 <body>
 
@@ -78,7 +194,7 @@
     <!-- Accordion for How Can This Tool Be Used? -->
     <button class="accordion">How Can This Tool Be Used?</button>    
     <!-- Accordion for Why is this Important? -->
-    <button class="accordion">Why is this Important?</button>
+    <button class="accordion">About the Land Conversion Calculator</button>
     <!-- Accordion for Resources -->
     <button class="accordion">Sources for Further Research</button>
   </div>
@@ -94,7 +210,7 @@
       <p>5. Use the "Export as CSV" or "Export as GeoJSON" buttons to export the results if needed.</p>
     </div>
 
-    <!-- Panel for How Can This Tool Be Used? -->
+    <!-- Panel for About -->
     <div class="panel">
       <p>This tool can be used for the purpose of providing supporting data for urban planning efforts. Ideally, this tool will be used for community based urban planning intiiatives that seek to provide more urban greenspace, additional wildlife and plant habitat, and improve air, soil, and water quality.</p>
       <p></p>

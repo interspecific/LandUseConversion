@@ -12,7 +12,7 @@ require([
 
   // Create a map and view
   const map = new Map({
-    basemap: "topo-vector"
+    basemap: "hybrid"
   });
 
   const view = new MapView({
@@ -101,13 +101,18 @@ require([
   });
   view.ui.add(sketch, "top-right");
 
-  // Add a Layer List widget to control the visibility of layers
-  const layerList = new LayerList({
-    view: view
-  });
-  view.ui.add(layerList, {
-    position: "top-left"
-  });
+// Add a Layer List widget to control the visibility of layers
+const layerList = new LayerList({
+  view: view,
+  container: document.createElement("div") // Create a container for the widget
+});
+
+// Add the container to the view's UI, applying a custom CSS class
+layerList.container.classList.add("custom-layerlist"); // Add a custom CSS class
+view.ui.add(layerList.container, {
+  position: "top-left"
+});
+
 
   // Sequestration rates (tons per hectare per year)
   const sequestrationRates = {
