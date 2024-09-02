@@ -22,42 +22,15 @@ require([
     zoom: 7
   });
 
+  // Add a GraphicsLayer for drawing
+  const graphicsLayer = new GraphicsLayer();
+  map.add(graphicsLayer);
+  
   // Create and add the Measurement widget
   const measurement = new Measurement({
     view: view
   });
   view.ui.add(measurement, "bottom-right");
-
-    // Create a Sketch widget for drawing polygons
-  const sketch = new Sketch({
-    layer: graphicsLayer,
-    view: view,
-    creationMode: "update"
-  });
-
-  // Add the Sketch widget to the top-right corner
-  view.ui.add(sketch, {
-    position: "top-right",
-    index: 1 // higher index so it appears above the Search widget
-  });
-
-  // Create the Search widget
-  const search = new Search({
-    view: view
-  });
-
-  // Add the Search widget below the Sketch widget
-  view.ui.add(search, {
-    position: "top-right",
-    index: 0 // lower index so it appears below the Sketch widget
-  });
-
-});
-
-
-  // Add a GraphicsLayer for drawing
-  const graphicsLayer = new GraphicsLayer();
-  map.add(graphicsLayer);
 
 // Add a Layer List widget to control the visibility of layers
 const layerList = new LayerList({
@@ -71,6 +44,48 @@ view.ui.add(layerList.container, {
   position: "top-left"
 });
 
+
+  // Create the Search widget
+  const search = new Search({
+    view: view
+  });
+
+  // Add the Search widget first
+  view.ui.add(search, {
+    position: "top-right"
+  });
+
+  // Create a Sketch widget for drawing polygons
+  const sketch = new Sketch({
+    layer: graphicsLayer,
+    view: view,
+    creationMode: "update"
+  });
+
+  // Add the Sketch widget after the Search widget
+  view.ui.add(sketch, {
+    position: "top-right"
+  });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   // Add various layers with visibility set to false
   const imageryLayer = new ImageryLayer({
     url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer",
