@@ -231,26 +231,59 @@ select {
 <!-- Panel for About -->
 <div class="panel">
   <h4>About the Land Use Conversion Calculator</h4>
-  <p>This tool is designed to empower urban planners, environmental scientists, conservationists, and community leaders with the ability to assess and quantify the environmental benefits of converting different types of land use. The tool uses scientifically-backed data and methods to estimate key environmental metrics such as carbon sequestration, stormwater retention, and habitat quality improvement.</p>
+  <p>This tool is intended to assist urban planners, environmental scientists, conservationists, and community leaders in evaluating and quantifying the potential environmental impacts of changing land use.</p>
+  
+  <h4>Methods and Sources</h4>
+  <p>The values used in this tool are derived from a combination of peer-reviewed research, government reports, and environmental databases. Specifically:</p>
   
   <h4>Methods and Sources</h4>
   <p>The values used in this tool are derived from a combination of peer-reviewed research, government reports, and environmental databases. Specifically:</p>
   <ul>
     <li><strong>Carbon Sequestration:</strong> 
       Estimates are based on data from authoritative sources like the Intergovernmental Panel on Climate Change (IPCC), which provide comprehensive information on the carbon sequestration potential of various ecosystems. Tropical forests, for example, can sequester up to 120 tonnes of carbon per hectare in vegetation alone, making them one of the most effective natural carbon sinks. Wetlands, on the other hand, are exceptionally effective in soil carbon storage, holding up to 643 tonnes per hectare of soil carbon, nearly six times more than tropical forests. Forests globally absorb approximately 15.6 billion tonnes of CO2 annually, about 40% of global CO2 emissions, underscoring their critical role in achieving net-zero emissions by 2050.
+      
+      <br><br>
+      <strong>Methodology:</strong> The calculation for carbon sequestration is based on the following formula:
+  
+      <div style="margin-left: 20px; font-family: Arial, sans-serif;">
+        <strong>Total Carbon Sequestration</strong> = <strong>Sequestration Rate</strong> × <strong>Area</strong>
+      </div>
+  
+      Here, the <strong>Sequestration Rate</strong> is the amount of carbon sequestered per hectare per year, specific to the ecosystem type, and the <strong>Area</strong> is the size of the land in hectares. The tool multiplies these rates by the area of the land to estimate the total carbon sequestration over a given period.
     </li>
     
     <li><strong>Stormwater Retention:</strong> 
       The tool incorporates hydrological data from studies on green infrastructure, which demonstrate the effectiveness of natural landscapes in managing stormwater. Green infrastructure, including urban wetlands, permeable pavements, and rain gardens, can significantly reduce stormwater runoff, improve water quality, and mitigate flooding risks in urban areas. For instance, wetlands can retain up to 1,500 cubic meters of stormwater per hectare per year, compared to just 50 cubic meters for bare soil and 400 cubic meters for grass lawns. In urban settings, green infrastructure is crucial for managing the challenges posed by increased impervious surfaces, which exacerbate stormwater runoff and pollution.
+      
+      <br><br>
+      <strong>Methodology:</strong> The stormwater retention calculation is based on the following formula:
+  
+      <div style="margin-left: 20px; font-family: Arial, sans-serif;">
+        <strong>Total Stormwater Retention</strong> = <strong>Retention Rate</strong> × <strong>Area</strong>
+      </div>
+  
+      Here, the <strong>Retention Rate</strong> is the volume of stormwater retained per hectare per year for a given land use type, and the <strong>Area</strong> is the size of the land in hectares. The tool calculates the total stormwater retention by multiplying these rates by the area under consideration.
     </li>
     
     <li><strong>Habitat Quality and Biodiversity:</strong> 
       Habitat quality scores are informed by ecological research that evaluates the impact of different land uses on biodiversity. Natural habitats, such as forests and wetlands, play a vital role in supporting diverse plant and animal species, essential for maintaining ecosystem resilience. Converting degraded or underutilized land to natural habitats can lead to significant improvements in biodiversity. Reforestation and wetland restoration projects not only increase carbon sequestration but also enhance habitat quality, supporting a wider range of species and promoting ecosystem health.
+      
+      <br><br>
+      <strong>Methodology:</strong> Habitat quality is quantified using the following formula:
+  
+      <div style="margin-left: 20px; font-family: Arial, sans-serif;">
+        <strong>Habitat Quality Score</strong> = <strong>Baseline Score</strong> + (<strong>Land Use Change Factor</strong> × <strong>Area</strong>)
+      </div>
+  
+      The <strong>Baseline Score</strong> represents the initial habitat quality before any land use changes, and the <strong>Land Use Change Factor</strong> reflects the potential improvement or degradation due to the change. The tool evaluates how changes in land use can either improve or degrade habitat quality by applying a score to each land use type, based on ecological studies.
     </li>
+  </ul>
+  
+  
   </ul>
 
   <h4>Context and Importance</h4>
-  <p>As the world grapples with the dual crises of climate change and biodiversity loss, the way we use and manage land has become critically important. Urbanization, deforestation, and the conversion of natural landscapes into agricultural or developed land are major drivers of greenhouse gas emissions, loss of ecosystems, and poor environmental quality.</p>
+  <p>As the world grapples with the issues of climate change, habitat and biodiversity loss, and environmental contamination, the way we use and manage land has become critically important. Urbanization, deforestation, and the conversion of natural landscapes into agricultural or developed land are major drivers of greenhouse gas emissions, loss of ecosystems, and poor environmental quality.</p>
   
   <p>This tool serves as a practical method to address these issues. By converting underutilized or degraded land into more sustainable uses—such as reforestation, wetland restoration, or the creation of urban green spaces—communities can:</p>
   <ul>
