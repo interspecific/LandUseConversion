@@ -7,8 +7,9 @@ require([
   "esri/layers/ImageryLayer",
   "esri/widgets/LayerList",
   "esri/widgets/Measurement",
-  "esri/widgets/Search"
-], function(Map, MapView, Sketch, GraphicsLayer, FeatureLayer, ImageryLayer, LayerList, Measurement, Search) {
+  "esri/widgets/Search",
+  "esri/geometry/geometryEngine" // Import geometryEngine for area calculations
+], function(Map, MapView, Sketch, GraphicsLayer, FeatureLayer, ImageryLayer, LayerList, Measurement, Search, geometryEngine) {
 
   // Create a map and view
   const map = new Map({
@@ -22,17 +23,12 @@ require([
     zoom: 7
   });
 
-  // Create and add the Measurement widget
-  const measurement = new Measurement({
-    view: view
-  });
-  view.ui.add(measurement, "bottom-right");
 
   // Create and add the Search widget
   const search = new Search({
     view: view
   });
-  view.ui.add(search, "top-right");
+  view.ui.add(search, "bottom-right");
 
   // Add a GraphicsLayer for drawing
   const graphicsLayer = new GraphicsLayer();
@@ -43,7 +39,7 @@ require([
     url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer",
     title: "Indiana Current Imagery",
     opacity: 0.9,
-    visible: true,
+    visible: false,
     format: "jpgpng"
   });
   map.add(imageryLayer);
@@ -51,7 +47,7 @@ require([
   const demLayer = new ImageryLayer({
     url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_2016_2020_DEM/ImageServer",
     title: "Indiana 2016-2020 DEM",
-    opacity: 0.5,
+    opacity: 0.8,
     visible: false,
     format: "jpgpng"
   });
@@ -101,17 +97,16 @@ require([
   });
   view.ui.add(sketch, "top-right");
 
-// Add a Layer List widget to control the visibility of layers
-const layerList = new LayerList({
-  view: view,
-  container: document.createElement("div") // Create a container for the widget
-});
+  // Add a Layer List widget to control the visibility of layers
+  const layerList = new LayerList({
+    view: view,
+    container: document.createElement("div")
+  });
+  layerList.container.classList.add("custom-layerlist");
+  view.ui.add(layerList.container, {
+    position: "top-left"
+  });
 
-// Add the container to the view's UI, applying a custom CSS class
-layerList.container.classList.add("custom-layerlist"); // Add a custom CSS class
-view.ui.add(layerList.container, {
-  position: "top-left"
-});
 
 
   // Sequestration rates (tons per hectare per year)
@@ -156,41 +151,67 @@ view.ui.add(layerList.container, {
     "reforestation": 100
   };
 
-  // Function to calculate benefits based on land use change
-  function calculateBenefits(currentUse, futureUse) {
-    const carbonSequestrationChange = sequestrationRates[futureUse] - sequestrationRates[currentUse];
-    const stormwaterRetentionChange = retentionRates[futureUse] - retentionRates[currentUse];
-    const habitatScoreChange = habitatScores[futureUse] - habitatScores[currentUse];
+// Function to calculate benefits based on land use change
+function calculateBenefits(currentUse, futureUse, areaInHectares) {
+  // Calculate total carbon sequestration for current and future land uses
+  const currentTotalSequestration = sequestrationRates[currentUse] * areaInHectares;
+  const futureTotalSequestration = sequestrationRates[futureUse] * areaInHectares;
+  const carbonSequestrationChange = futureTotalSequestration - currentTotalSequestration;
 
-    return {
-      carbonSequestrationChange,
-      stormwaterRetentionChange,
-      habitatScoreChange
-    };
-  }
+  // Calculate total stormwater retention for current and future land uses
+  const currentTotalRetention = retentionRates[currentUse] * areaInHectares;
+  const futureTotalRetention = retentionRates[futureUse] * areaInHectares;
+  const stormwaterRetentionChange = futureTotalRetention - currentTotalRetention;
 
-  // Event listener for the "Calculate Benefits" button
-  document.getElementById("calculateBtn").addEventListener("click", function() {
-    const currentLandUse = document.getElementById("currentLandUse").value;
-    const futureLandUse = document.getElementById("futureLandUse").value;
-    const benefits = calculateBenefits(currentLandUse, futureLandUse);
+  // Calculate habitat quality change (per hectare change applied to the total area)
+  const habitatScoreChange = (habitatScores[futureUse] - habitatScores[currentUse]) * areaInHectares;
 
-    // Determine whether the changes are increases or decreases
-    const carbonChangeType = benefits.carbonSequestrationChange >= 0 ? "sequestered" : "released";
-    const stormwaterChangeType = benefits.stormwaterRetentionChange >= 0 ? "retained" : "released as";
-    const habitatChangeType = benefits.habitatScoreChange >= 0 ? "improve" : "degrade";
+  return {
+    currentTotalSequestration,
+    futureTotalSequestration,
+    carbonSequestrationChange,
+    currentTotalRetention,
+    futureTotalRetention,
+    stormwaterRetentionChange,
+    habitatScoreChange,
+    areaInHectares
+  };
+}
 
-    // Display the results
-    document.getElementById("results").innerHTML = `
-      <h4>Environmental Benefits:</h4>
-      <p>By converting the existing "${currentLandUse}" land use to "${futureLandUse}" land use, approximately:</p>
-      <ul>
-        <li>${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will be ${carbonChangeType}.</li>
-        <li>${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters of water will be ${stormwaterChangeType}.</li>
-        <li>The habitat quality will ${habitatChangeType} by ${Math.abs(benefits.habitatScoreChange.toFixed(2))} units.</li>
-      </ul>
-    `;
+// Event listener for the "Calculate Benefits" button
+document.getElementById("calculateBtn").addEventListener("click", function() {
+  const currentLandUse = document.getElementById("currentLandUse").value;
+  const futureLandUse = document.getElementById("futureLandUse").value;
 
-    console.log("Results displayed.");
-  });
-});
+  // Get the polygon geometry from the graphics layer
+  const polygon = graphicsLayer.graphics.getItemAt(0).geometry;
+
+  // Calculate the area in square meters and convert to hectares
+  const areaInSquareMeters = geometryEngine.geodesicArea(polygon, "square-meters");
+  const areaInHectares = areaInSquareMeters / 10000; // Convert square meters to hectares
+
+  // Calculate the benefits
+  const benefits = calculateBenefits(currentLandUse, futureLandUse, areaInHectares);
+
+  // Display the results including the polygon area
+  document.getElementById("results").innerHTML = `
+    <h4>Environmental Benefits:</h4>
+    <p><strong>Area of the selected site:</strong> ${benefits.areaInHectares.toFixed(2)} hectares.</p>
+
+    <h5><strong>Carbon Sequestration:</strong></h5>
+    <ul>
+      <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalSequestration.toFixed(2)} tons of carbon.</li>
+      <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalSequestration.toFixed(2)} tons of carbon.</li>
+      <li><strong>Difference:</strong> ${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will be ${benefits.carbonSequestrationChange >= 0 ? "sequestered" : "released"}.</li>
+    </ul>
+
+    <h5><strong>Stormwater Retention:</strong></h5>
+    <ul>
+      <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalRetention.toFixed(2)} cubic meters.</li>
+      <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalRetention.toFixed(2)} cubic meters.</li>
+      <li><strong>Difference:</strong> ${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters will be ${benefits.stormwaterRetentionChange >= 0 ? "retained" : "released"}.</li>
+    </ul>
+
+  `;
+  console.log("Results displayed.");
+});})

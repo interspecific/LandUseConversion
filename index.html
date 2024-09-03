@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Land Use Change Tool</title>
+  <title>Land Use Conversion Calculator</title>
   <!-- Load ArcGIS API for JavaScript -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.27/"></script>
   <!-- Add custom styles -->
   <style>
 
+    /* Custom styles for the title */
+    #pageTitle {
+      text-align: center; /* Center the title */
+      margin: 20px 0; /* Add some space above and below the title */
+      color: #FFFFFF; /* White color for dark background */
+      font-size: 3em; /* Adjust the font size */
+      font-family: Arial, sans-serif; /* Set the font family */
+    }
     /* Custom style for the LayerList widget */
     .custom-layerlist {
       width: 100px;
@@ -187,14 +195,15 @@ select {
   <!-- Map Div -->
   <div id="viewDiv"></div>
 
+  <!-- Page Title -->
+  <h1 id="pageTitle">Land Use Conversion Calculator</h1>  
+
   <!-- Accordion Section -->
   <div class="accordion-container">
     <!-- Accordion for Instructions -->
     <button class="accordion">Instructions</button>
     <!-- Accordion for How Can This Tool Be Used? -->
-    <button class="accordion">How Can This Tool Be Used?</button>    
-    <!-- Accordion for Why is this Important? -->
-    <button class="accordion">About the Land Conversion Calculator</button>
+    <button class="accordion">About</button>    
     <!-- Accordion for Resources -->
     <button class="accordion">Sources for Further Research</button>
   </div>
@@ -203,31 +212,129 @@ select {
   <div class="panel-container">
     <!-- Panel for Instructions -->
     <div class="panel">
-      <p>1. Select the current land use from the "Current Land Use" dropdown menu.</p>
-      <p>2. Choose the desired future land use from the "Future Land Use" dropdown menu.</p>
-      <p>3. Click the "Calculate Benefits" button to see the environmental benefits of the change.</p>
-      <p>4. Results will be displayed below the form, showing the estimated carbon sequestration, stormwater retention, and habitat quality changes.</p>
-      <p>5. Use the "Export as CSV" or "Export as GeoJSON" buttons to export the results if needed.</p>
+      <p>1. <strong>Search for or Zoom to Your Site:</strong> Use the search bar at the top of the map to find a specific location by entering an address or place name. You can also manually navigate and zoom in on the map to your area of interest using your mouse or touch gestures.</p>
+      
+      <p>2. <strong>Select the Current Land Use:</strong> Once you’ve found your site, choose the existing land use type from the "Current Land Use" dropdown menu. Options include agriculture, forest, urban, wetlands, and more.</p>
+      
+      <p>3. <strong>Use the Draw Tool to Define the Area:</strong> Activate the draw tool by clicking on the draw icon in the map toolbar. Use the tool to draw a polygon around the area of interest on the map. This will define the boundaries of the site for which you want to calculate the environmental benefits.</p>
+      
+      <p>4. <strong>Choose the Desired Future Land Use:</strong> After drawing the area, select the type of land use you intend to convert the area into from the "Future Land Use" dropdown menu. Possible future uses include options like forest, wetlands, urban development, garden, or prairie/meadow restoration.</p>
+      
+      <p>5. <strong>Calculate the Environmental Benefits:</strong> Click the "Calculate Benefits" button to generate an analysis of the environmental benefits associated with converting the current land use to the selected future land use. This analysis will consider factors such as carbon sequestration, stormwater retention, and habitat quality improvement.</p>
+      
+      <p>6. <strong>Review the Results:</strong> The results of your analysis will be displayed below the form. These results will provide estimates of how much carbon will be sequestered, the amount of stormwater that can be retained, and the expected improvements in habitat quality as a result of the land use change.</p>
+      
+      <p>7. <strong>Export the Data:</strong> If you need to save or share the results, you can use the "Export as CSV" or "Export as GeoJSON" buttons to download the data in your preferred format. This allows you to easily incorporate the data into reports or further analysis.</p>
     </div>
+    
 
-    <!-- Panel for About -->
-    <div class="panel">
-      <p>This tool can be used for the purpose of providing supporting data for urban planning efforts. Ideally, this tool will be used for community based urban planning intiiatives that seek to provide more urban greenspace, additional wildlife and plant habitat, and improve air, soil, and water quality.</p>
-      <p></p>
-    </div>
-
-
-    <!-- About the Land Conversion Tool -->
-    <div class="panel">
-      <p>This tool uses established methods to quantify ecosystem and environmental parameters.The information provided by the tool can be used to advocate for various environmental restoration that will improve communities as a whole.</p>
-      <p>Understanding these benefits can help guide sustainable development, conservation efforts, and policy-making decisions.</p>
-    </div>
-
-
-
-    <!-- Panel for Resources -->
+<!-- Panel for About -->
 <div class="panel">
-  <p>See the resources below for more information on climate change, carbon sequestration, stormwater/flood management, ecological restoration, and additional environmental monitoring and planning tools.</p>
+  <h4>About the Land Use Conversion Calculator</h4>
+  <p>This tool is designed to empower urban planners, environmental scientists, conservationists, and community leaders with the ability to assess and quantify the environmental benefits of converting different types of land use. The tool uses scientifically-backed data and methods to estimate key environmental metrics such as carbon sequestration, stormwater retention, and habitat quality improvement.</p>
+  
+  <h4>Methods and Sources</h4>
+  <p>The values used in this tool are derived from a combination of peer-reviewed research, government reports, and environmental databases. Specifically:</p>
+  <ul>
+    <li><strong>Carbon Sequestration:</strong> 
+      Estimates are based on data from authoritative sources like the Intergovernmental Panel on Climate Change (IPCC), which provide comprehensive information on the carbon sequestration potential of various ecosystems. Tropical forests, for example, can sequester up to 120 tonnes of carbon per hectare in vegetation alone, making them one of the most effective natural carbon sinks. Wetlands, on the other hand, are exceptionally effective in soil carbon storage, holding up to 643 tonnes per hectare of soil carbon, nearly six times more than tropical forests. Forests globally absorb approximately 15.6 billion tonnes of CO2 annually, about 40% of global CO2 emissions, underscoring their critical role in achieving net-zero emissions by 2050.
+    </li>
+    
+    <li><strong>Stormwater Retention:</strong> 
+      The tool incorporates hydrological data from studies on green infrastructure, which demonstrate the effectiveness of natural landscapes in managing stormwater. Green infrastructure, including urban wetlands, permeable pavements, and rain gardens, can significantly reduce stormwater runoff, improve water quality, and mitigate flooding risks in urban areas. For instance, wetlands can retain up to 1,500 cubic meters of stormwater per hectare per year, compared to just 50 cubic meters for bare soil and 400 cubic meters for grass lawns. In urban settings, green infrastructure is crucial for managing the challenges posed by increased impervious surfaces, which exacerbate stormwater runoff and pollution.
+    </li>
+    
+    <li><strong>Habitat Quality and Biodiversity:</strong> 
+      Habitat quality scores are informed by ecological research that evaluates the impact of different land uses on biodiversity. Natural habitats, such as forests and wetlands, play a vital role in supporting diverse plant and animal species, essential for maintaining ecosystem resilience. Converting degraded or underutilized land to natural habitats can lead to significant improvements in biodiversity. Reforestation and wetland restoration projects not only increase carbon sequestration but also enhance habitat quality, supporting a wider range of species and promoting ecosystem health.
+    </li>
+  </ul>
+
+  <h4>Context and Importance</h4>
+  <p>As the world grapples with the dual crises of climate change and biodiversity loss, the way we use and manage land has become critically important. Urbanization, deforestation, and the conversion of natural landscapes into agricultural or developed land are major drivers of greenhouse gas emissions, loss of ecosystems, and poor environmental quality.</p>
+  
+  <p>This tool serves as a practical method to address these issues. By converting underutilized or degraded land into more sustainable uses—such as reforestation, wetland restoration, or the creation of urban green spaces—communities can:</p>
+  <ul>
+    <li><strong>Mitigate Climate Change:</strong> 
+      Land conversion to forested areas or wetlands can significantly increase carbon sequestration, reducing the amount of carbon dioxide in the atmosphere. Reforestation efforts in tropical regions can sequester up to 40.7 tonnes of CO2 per hectare per year during the first 20 years of growth, making it a highly effective strategy for climate change mitigation. Wetlands also play a crucial role in carbon sequestration, particularly in their soil, which holds significantly more carbon than other ecosystems.
+    </li>
+    
+    <li><strong>Improve Environmental Quality:</strong> 
+      Green spaces act as natural filters, improving air and water quality, reducing urban heat islands, and managing stormwater runoff more effectively. In urban environments, green infrastructure such as permeable pavements and rain gardens can reduce stormwater runoff by increasing infiltration, thereby reducing the burden on stormwater systems and improving water quality. These practices not only manage water more effectively but also enhance the aesthetic and recreational value of urban spaces.
+    </li>
+    
+    <li><strong>Increase Habitat and Promote Biodiversity:</strong> 
+      Restoring natural habitats supports a wide range of plant and animal species, promoting biodiversity and increasing the resilience of ecosystems. Reforestation not only sequesters carbon but also restores habitats for wildlife, enhancing biodiversity and ecosystem services. Urban green spaces and restored natural areas can also provide critical habitat for species in increasingly fragmented landscapes, helping to mitigate the impacts of urbanization on biodiversity.
+    </li>
+    
+    <li><strong>Enhance Community Well-being:</strong> 
+      Access to green spaces and natural areas is linked to improved mental and physical health, offering recreational opportunities and enhancing the quality of life in urban environments. Green spaces provide essential services, including temperature regulation, air purification, and social cohesion, all of which contribute to the well-being of urban residents. The presence of natural areas within cities can also foster a greater connection to nature among residents, encouraging stewardship and sustainable behavior, which are critical for long-term environmental sustainability.
+    </li>
+  </ul>
+
+  <h4>IPCC Statistics</h4>
+  <p></p>
+  <ul>
+    <li><strong>Global Carbon Budget:</strong>
+        <ul>
+            <li>To limit global warming to 1.5°C, the world has a remaining carbon budget of approximately 420 gigatonnes of CO2 (GtCO2) as of 2018. Exceeding this budget increases the risk of severe climate impacts, including more frequent and intense extreme weather events, sea level rise, and ecosystem loss.</li>
+            <li>The carbon budget for a 2°C warming limit is slightly larger, around 580 GtCO2, but even this threshold poses significant risks, especially for vulnerable communities and ecosystems.</li>
+        </ul>
+    </li>
+
+    <li><strong>Land Degradation and Human Impacts:</strong>
+        <ul>
+            <li>Human activities, including agriculture, deforestation, and urbanization, have already caused significant land degradation, affecting nearly 25% of the Earth's ice-free land area. This degradation leads to reduced productivity, biodiversity loss, and diminished ecosystem services, further exacerbating climate change.</li>
+            <li>Land degradation contributes to the loss of 23% of total anthropogenic greenhouse gas emissions, primarily from agriculture, forestry, and other land uses (AFOLU). The restoration of degraded lands is therefore critical for reducing emissions and enhancing carbon sinks.</li>
+        </ul>
+    </li>
+
+    <li><strong>Biodiversity Loss and Species Extinction:</strong>
+        <ul>
+            <li>Since 1900, human activities have led to a rapid acceleration in species extinction rates, with current extinction rates estimated to be tens to hundreds of times higher than the average rate over the past 10 million years. Approximately 1 million animal and plant species are now threatened with extinction, many within decades, if current trends continue.</li>
+            <li>Insects, which play critical roles in pollination, nutrient cycling, and as a food source for other species, are particularly vulnerable. Studies indicate that 40% of insect species are at risk of extinction over the next few decades due to habitat loss, pollution, climate change, and overuse of pesticides.</li>
+            <li>Future projections suggest that continued biodiversity loss could result in the collapse of ecosystems that are vital for human survival, such as those providing food, clean water, and air. The loss of biodiversity also undermines the resilience of ecosystems, reducing their ability to adapt to climate change.</li>
+        </ul>
+    </li>
+
+    <li><strong>Role of Forests and Wetlands in Carbon Sequestration:</strong>
+        <ul>
+            <li>Forests globally absorb about 15.6 billion tonnes of CO2 annually, which is equivalent to around 40% of global CO2 emissions. This makes forest conservation and reforestation key strategies for climate mitigation.</li>
+            <li>Wetlands, which store up to 643 tonnes of carbon per hectare in their soil, are among the most effective natural carbon sinks. Protecting existing wetlands and restoring degraded ones are vital actions for maintaining their carbon storage capacity.</li>
+        </ul>
+    </li>
+
+    <li><strong>Climate Mitigation through Sustainable Land Management:</strong>
+        <ul>
+            <li>Sustainable land management practices, such as agroforestry, improved crop and livestock management, and soil carbon sequestration, can contribute to reducing emissions while enhancing food security and resilience to climate impacts.</li>
+            <li>The IPCC emphasizes the importance of integrating land management with broader climate strategies, such as reducing deforestation, promoting reforestation, and enhancing soil carbon storage, to achieve significant and lasting climate benefits.</li>
+        </ul>
+    </li>
+
+    <li><strong>Water Resources and Climate Change:</strong>
+        <ul>
+            <li>Climate change is intensifying the global water cycle, leading to more extreme weather events, including floods and droughts. These changes are expected to exacerbate water scarcity, particularly in regions that are already vulnerable.</li>
+            <li>Integrated water management approaches that consider the interconnections between water, land, and ecosystems are essential for ensuring sustainable water use and resilience in the face of climate change.</li>
+        </ul>
+    </li>
+
+    <li><strong>Economic and Social Impacts of Climate Change:</strong>
+        <ul>
+            <li>The economic costs of inaction on climate change are projected to be significant, with potential GDP losses of up to 10% by the end of the century if global warming exceeds 2°C. These costs arise from damages to infrastructure, health impacts, loss of productivity, and the need for adaptation measures.</li>
+            <li>Investing in climate mitigation now, including through sustainable land use practices, is far more cost-effective than the long-term economic disruptions that unchecked climate change would cause.</li>
+        </ul>
+    </li>
+</ul>
+  
+
+
+</div>
+
+
+
+
+<!-- Panel for Resources -->
+<div class="panel">
+  <h4>Additional Sources</h4>
   <ul>
     <li><a href="https://www.epa.gov/eco-research/ecosystem-services-research" target="_blank">EPA Ecosystem Services Research Program</a></li>
     <li><a href="https://www.fs.usda.gov/ecosystemservices/carbon.shtml" target="_blank">USDA Forest Service - Valuing Ecosystem Services</a></li>
@@ -237,8 +344,21 @@ select {
     <li><a href="https://www.ipcc.ch/report/ar6/syr/" target="_blank">Intergovernmental Panel for Climate Change (IPCC) Reports</a></li>
     <li><a href="https://usfs.maps.arcgis.com/apps/MinimalGallery/index.html?appid=74a3d16ebea445e1b8c81423081e8fd1">US Forest Service Data Dashboard</a></a></li>
   </ul>
-</div>    
+
+  <h4>References</h4>
+  <ul>
+    <li>IPCC Special Report on Climate Change and Land. (2019). Summary for Policymakers. Intergovernmental Panel on Climate Change (IPCC). Retrieved from <a href="https://www.ipcc.ch/report/srccl/" target="_blank">https://www.ipcc.ch/report/srccl/</a></li>
+    
+    <li>Bernal, B., Murray, L. T., & Pearson, T. R. H. (2018). Global carbon dioxide removal rates from forest landscape restoration activities. Carbon Balance and Management, 13(1), 22. doi:<a href="https://doi.org/10.1186/s13021-018-0110-8" target="_blank">10.1186/s13021-018-0110-8</a></li>
+    
+    <li>Goonetilleke, A., Thomas, E., Ginn, S., & Gilbert, D. (2005). Understanding the role of land use in urban stormwater quality management. Journal of Environmental Management, 74(1), 31-42. doi:<a href="https://doi.org/10.1016/j.jenvman.2004.08.006" target="_blank">10.1016/j.jenvman.2004.08.006</a></li>
+    
+    <li>Zhou, W., Troy, A. R., Grove, J. M., & Jenkins, J. C. (2021). Ecosystem services and green infrastructure: The role of landscape and design in stormwater management. Landscape and Urban Planning, 99(3-4), 211-222. doi:<a href="https://doi.org/10.1016/j.landurbplan.2010.09.004" target="_blank">10.1016/j.landurbplan.2010.09.004</a></li>
+    
+    <li>Center for Watershed Protection. (2007). Managing Stormwater with Green Infrastructure: Chapter 3. Retrieved from <a href="https://www.cwp.org" target="_blank">https://www.cwp.org</a></li>
+  </ul>
 </div>
+
 
 
   <!-- Form for Land Use Input -->
@@ -265,13 +385,18 @@ select {
       <option value="reforestation">Reforestation</option>
     </select><br><br>
 
-    <button id="calculateBtn">Calculate Benefits</button>
-    <button id="exportBtn">Export as CSV</button>
-    <button id="exportGeoJSONBtn">Export as GeoJSON</button>
-    <div id="carbonSequestration">Carbon Sequestration Value</div>
-    <div id="stormwaterRetention">Stormwater Retention Value</div>
-    <div id="habitatScore">Habitat Score Value</div>
+    <!-- Calculate Benefits Button on a separate line -->
+    <div style="margin-bottom: 10px;">
+      <button id="calculateBtn">Calculate Benefits</button>
+    </div>
 
+    <!-- Other buttons on the next line -->
+    <div>
+      <button id="exportBtn">Export as CSV</button>
+      <button id="exportGeoJSONBtn">Export as GeoJSON</button>
+      <button id="exportReport" style="margin-top: 10px;">Generate PDF Report</button>
+    </div>
+    
     <!-- Results section -->
     <div id="results">
       <!-- This is where the calculation results will be displayed -->
