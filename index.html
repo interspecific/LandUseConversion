@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
   <title>Land Use Conversion Calculator</title>
   <!-- Load ArcGIS API for JavaScript -->
@@ -136,12 +137,12 @@ button:hover {
 /* Accordion styles */
 .accordion {
   background-color: #2E2E2E; /* Dark grey for accordion buttons */
-  color: #FFFFFF;
+  color: #2E7D32;
   padding: 10px;
   border: none;
   text-align: center;
   outline: none;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-bottom: 5px;
@@ -188,8 +189,11 @@ select {
 
   </style>
   
+
   
 </head>
+
+
 <body>
 
   <!-- Map Div -->
@@ -205,7 +209,7 @@ select {
     <!-- Accordion for How Can This Tool Be Used? -->
     <button class="accordion">About</button>    
     <!-- Accordion for Resources -->
-    <button class="accordion">Sources for Further Research</button>
+    <button class="accordion">Resources</button>
   </div>
 
   <!-- Panels Section -->
@@ -230,17 +234,13 @@ select {
 
 <!-- Panel for About -->
 <div class="panel">
-  <h4>About the Land Use Conversion Calculator</h4>
-  <p>This tool is intended to assist urban planners, environmental scientists, conservationists, and community leaders in evaluating and quantifying the potential environmental impacts of changing land use.</p>
-  
+
   <h4>Methods and Sources</h4>
-  <p>The values used in this tool are derived from a combination of peer-reviewed research, government reports, and environmental databases. Specifically:</p>
-  
-  <h4>Methods and Sources</h4>
-  <p>The values used in this tool are derived from a combination of peer-reviewed research, government reports, and environmental databases. Specifically:</p>
+  <p>The values used in this tool are derived from a combination of peer-reviewed research and government databases and reports.</p>
+ 
   <ul>
     <li><strong>Carbon Sequestration:</strong> 
-      Estimates are based on data from authoritative sources like the Intergovernmental Panel on Climate Change (IPCC), which provide comprehensive information on the carbon sequestration potential of various ecosystems. Tropical forests, for example, can sequester up to 120 tonnes of carbon per hectare in vegetation alone, making them one of the most effective natural carbon sinks. Wetlands, on the other hand, are exceptionally effective in soil carbon storage, holding up to 643 tonnes per hectare of soil carbon, nearly six times more than tropical forests. Forests globally absorb approximately 15.6 billion tonnes of CO2 annually, about 40% of global CO2 emissions, underscoring their critical role in achieving net-zero emissions by 2050.
+      Estimates are based on data from authoritative sources like the Intergovernmental Panel on Climate Change (IPCC), which provide  information on the carbon sequestration potential of various ecosystems. Tropical forests, for example, can sequester up to 120 tonnes of carbon per hectare in vegetation alone, making them one of the most effective natural carbon sinks. Wetlands, on the other hand, are exceptionally effective in soil carbon storage, holding up to 643 tonnes per hectare of soil carbon, nearly six times more than tropical forests. Forests globally absorb approximately 15.6 billion tonnes of CO2 annually, about 40% of global CO2 emissions, underscoring their critical role in achieving net-zero emissions by 2050.
       
       <br><br>
       <strong>Methodology:</strong> The calculation for carbon sequestration is based on the following formula:
@@ -304,6 +304,41 @@ select {
     </li>
   </ul>
 
+
+  
+
+
+</div>
+
+
+
+
+<!-- Panel for Resources -->
+<div class="panel">
+  <h4>Additional Sources</h4>
+  <ul>
+    <li><a href="https://www.epa.gov/eco-research/ecosystem-services-research" target="_blank">EPA Ecosystem Services Research Program</a></li>
+    <li><a href="https://www.fs.usda.gov/ecosystemservices/carbon.shtml" target="_blank">USDA Forest Service - Valuing Ecosystem Services</a></li>
+    <li><a href="https://coast.noaa.gov/" target="_blank">NOAA Office for Coastal Management</a></li>
+    <li><a href="https://www.mrlc.gov/" target="_blank">National Land Cover Database (NLCD)</a></li>
+    <li><a href="https://www.nature.org/en-us/what-we-do/our-priorities/tackle-climate-change/" target="_blank">The Nature Conservancy Climate Change Goals for 2030</a></li>
+    <li><a href="https://www.ipcc.ch/report/ar6/syr/" target="_blank">Intergovernmental Panel for Climate Change (IPCC) Reports</a></li>
+    <li><a href="https://usfs.maps.arcgis.com/apps/MinimalGallery/index.html?appid=74a3d16ebea445e1b8c81423081e8fd1">US Forest Service Data Dashboard</a></a></li>
+  </ul>
+
+  <h4>References</h4>
+  <ul>
+    <li>IPCC Special Report on Climate Change and Land. (2019). Summary for Policymakers. Intergovernmental Panel on Climate Change (IPCC). Retrieved from <a href="https://www.ipcc.ch/report/srccl/" target="_blank">https://www.ipcc.ch/report/srccl/</a></li>
+    
+    <li>Bernal, B., Murray, L. T., & Pearson, T. R. H. (2018). Global carbon dioxide removal rates from forest landscape restoration activities. Carbon Balance and Management, 13(1), 22. doi:<a href="https://doi.org/10.1186/s13021-018-0110-8" target="_blank">10.1186/s13021-018-0110-8</a></li>
+    
+    <li>Goonetilleke, A., Thomas, E., Ginn, S., & Gilbert, D. (2005). Understanding the role of land use in urban stormwater quality management. Journal of Environmental Management, 74(1), 31-42. doi:<a href="https://doi.org/10.1016/j.jenvman.2004.08.006" target="_blank">10.1016/j.jenvman.2004.08.006</a></li>
+    
+    <li>Zhou, W., Troy, A. R., Grove, J. M., & Jenkins, J. C. (2021). Ecosystem services and green infrastructure: The role of landscape and design in stormwater management. Landscape and Urban Planning, 99(3-4), 211-222. doi:<a href="https://doi.org/10.1016/j.landurbplan.2010.09.004" target="_blank">10.1016/j.landurbplan.2010.09.004</a></li>
+    
+    <li>Center for Watershed Protection. (2007). Managing Stormwater with Green Infrastructure: Chapter 3. Retrieved from <a href="https://www.cwp.org" target="_blank">https://www.cwp.org</a></li>
+  </ul>
+
   <h4>IPCC Statistics</h4>
   <p></p>
   <ul>
@@ -357,39 +392,7 @@ select {
         </ul>
     </li>
 </ul>
-  
 
-
-</div>
-
-
-
-
-<!-- Panel for Resources -->
-<div class="panel">
-  <h4>Additional Sources</h4>
-  <ul>
-    <li><a href="https://www.epa.gov/eco-research/ecosystem-services-research" target="_blank">EPA Ecosystem Services Research Program</a></li>
-    <li><a href="https://www.fs.usda.gov/ecosystemservices/carbon.shtml" target="_blank">USDA Forest Service - Valuing Ecosystem Services</a></li>
-    <li><a href="https://coast.noaa.gov/" target="_blank">NOAA Office for Coastal Management</a></li>
-    <li><a href="https://www.mrlc.gov/" target="_blank">National Land Cover Database (NLCD)</a></li>
-    <li><a href="https://www.nature.org/en-us/what-we-do/our-priorities/tackle-climate-change/" target="_blank">The Nature Conservancy Climate Change Goals for 2030</a></li>
-    <li><a href="https://www.ipcc.ch/report/ar6/syr/" target="_blank">Intergovernmental Panel for Climate Change (IPCC) Reports</a></li>
-    <li><a href="https://usfs.maps.arcgis.com/apps/MinimalGallery/index.html?appid=74a3d16ebea445e1b8c81423081e8fd1">US Forest Service Data Dashboard</a></a></li>
-  </ul>
-
-  <h4>References</h4>
-  <ul>
-    <li>IPCC Special Report on Climate Change and Land. (2019). Summary for Policymakers. Intergovernmental Panel on Climate Change (IPCC). Retrieved from <a href="https://www.ipcc.ch/report/srccl/" target="_blank">https://www.ipcc.ch/report/srccl/</a></li>
-    
-    <li>Bernal, B., Murray, L. T., & Pearson, T. R. H. (2018). Global carbon dioxide removal rates from forest landscape restoration activities. Carbon Balance and Management, 13(1), 22. doi:<a href="https://doi.org/10.1186/s13021-018-0110-8" target="_blank">10.1186/s13021-018-0110-8</a></li>
-    
-    <li>Goonetilleke, A., Thomas, E., Ginn, S., & Gilbert, D. (2005). Understanding the role of land use in urban stormwater quality management. Journal of Environmental Management, 74(1), 31-42. doi:<a href="https://doi.org/10.1016/j.jenvman.2004.08.006" target="_blank">10.1016/j.jenvman.2004.08.006</a></li>
-    
-    <li>Zhou, W., Troy, A. R., Grove, J. M., & Jenkins, J. C. (2021). Ecosystem services and green infrastructure: The role of landscape and design in stormwater management. Landscape and Urban Planning, 99(3-4), 211-222. doi:<a href="https://doi.org/10.1016/j.landurbplan.2010.09.004" target="_blank">10.1016/j.landurbplan.2010.09.004</a></li>
-    
-    <li>Center for Watershed Protection. (2007). Managing Stormwater with Green Infrastructure: Chapter 3. Retrieved from <a href="https://www.cwp.org" target="_blank">https://www.cwp.org</a></li>
-  </ul>
 </div>
 
 
@@ -462,6 +465,8 @@ select {
 
   <!-- Include JavaScript for Land Use Tool -->
   <script src="landUseTool.js"></script>
+
+
 
 </body>
 </html>

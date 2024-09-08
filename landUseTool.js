@@ -8,10 +8,13 @@ require([
   "esri/widgets/LayerList",
   "esri/widgets/Measurement",
   "esri/widgets/Search",
-  "esri/geometry/geometryEngine" // Import geometryEngine for area calculations
-], function(Map, MapView, Sketch, GraphicsLayer, FeatureLayer, ImageryLayer, LayerList, Measurement, Search, geometryEngine) {
+  "esri/geometry/geometryEngine",
+  "esri/widgets/Fullscreen",
+  "esri/widgets/BasemapGallery",
+  "esri/Basemap"
+], function(Map, MapView, Sketch, GraphicsLayer, FeatureLayer, ImageryLayer, LayerList, Measurement, Search, geometryEngine, Fullscreen, BasemapGallery, Basemap) {
 
-  // Create a map and view
+  // MAP AND VIEW INITIALIZATION
   const map = new Map({
     basemap: "hybrid"
   });
@@ -23,73 +26,85 @@ require([
     zoom: 7
   });
 
+  // =======================
+  // LAYER SETUP
+  // =======================
 
-  // Create and add the Search widget
-  const search = new Search({
-    view: view
-  });
-  view.ui.add(search, "bottom-right");
-
-  // Add a GraphicsLayer for drawing
+  // Graphics Layer for Drawing
   const graphicsLayer = new GraphicsLayer();
   map.add(graphicsLayer);
 
-  // Add various layers with visibility set to false
-  const imageryLayer = new ImageryLayer({
-    url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer",
-    title: "Indiana Current Imagery",
-    opacity: 0.9,
-    visible: false,
-    format: "jpgpng"
-  });
-  map.add(imageryLayer);
+  // Function to add layers
+  function addLayersToMap() {
+    // Imagery Layer
+    const imageryLayer = new ImageryLayer({
+      url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer",
+      title: "Indiana Current Imagery",
+      opacity: 0.9,
+      visible: false,
+      format: "jpgpng"
+    });
+    map.add(imageryLayer);
 
-  const demLayer = new ImageryLayer({
-    url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_2016_2020_DEM/ImageServer",
-    title: "Indiana 2016-2020 DEM",
-    opacity: 0.8,
-    visible: false,
-    format: "jpgpng"
-  });
-  map.add(demLayer);
+    // DEM Layer
+    const demLayer = new ImageryLayer({
+      url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_2016_2020_DEM/ImageServer",
+      title: "Indiana 2016-2020 DEM",
+      opacity: 0.8,
+      visible: false,
+      format: "jpgpng"
+    });
+    map.add(demLayer);
 
-  const countyBoundariesLayer = new FeatureLayer({
-    url: "https://gisdata.in.gov/server/rest/services/Hosted/County_Boundaries_of_Indiana_Current/FeatureServer",
-    title: "County Boundaries of Indiana",
-    outFields: ["*"],
-    visible: false,
-    popupTemplate: {
-      title: "County: {NAME}",
-      content: "County FIPS Code: {FIPS_CODE}"
-    }
-  });
-  map.add(countyBoundariesLayer);
+    // County Boundaries Layer
+    const countyBoundariesLayer = new FeatureLayer({
+      url: "https://gisdata.in.gov/server/rest/services/Hosted/County_Boundaries_of_Indiana_Current/FeatureServer",
+      title: "County Boundaries of Indiana",
+      outFields: ["*"],
+      visible: true,
+      popupTemplate: {
+        title: "County: {NAME}",
+        content: "County FIPS Code: {FIPS_CODE}"
+      }
+    });
+    map.add(countyBoundariesLayer);
 
-  const parcelBoundariesLayer = new FeatureLayer({
-    url: "https://gisdata.in.gov/server/rest/services/Hosted/Parcel_Boundaries_of_Indiana_Current/FeatureServer",
-    title: "Parcel Boundaries of Indiana",
-    outFields: ["*"],
-    visible: false,
-    popupTemplate: {
-      title: "Parcel ID: {PARCEL_ID}",
-      content: "Owner: {OWNER_NAME}"
-    }
-  });
-  map.add(parcelBoundariesLayer);
+    // Parcel Boundaries Layer
+    const parcelBoundariesLayer = new FeatureLayer({
+      url: "https://gisdata.in.gov/server/rest/services/Hosted/Parcel_Boundaries_of_Indiana_Current/FeatureServer",
+      title: "Parcel Boundaries of Indiana",
+      outFields: ["*"],
+      visible: true,
+      popupTemplate: {
+        title: "Parcel ID: {PARCEL_ID}",
+        content: "Area in acres: {SHAPE_Area}"
+      }
+    });
+    map.add(parcelBoundariesLayer);
 
-  const nhdStreamsLayer = new FeatureLayer({
-    url: "https://gisdata.in.gov/server/rest/services/Hosted/Legacy_NHD_Rivers_Streams_etc_2008/FeatureServer/0",
-    title: "NHD Streams of Indiana",
-    outFields: ["*"],
-    visible: false,
-    popupTemplate: {
-      title: "Stream: {GNIS_NAME}",
-      content: "Type: {FCODE}"
-    }
-  });
-  map.add(nhdStreamsLayer);
+    // NHD Streams Layer
+    const nhdStreamsLayer = new FeatureLayer({
+      url: "https://gisdata.in.gov/server/rest/services/Hosted/Legacy_NHD_Rivers_Streams_etc_2008/FeatureServer/0",
+      title: "NHD Streams of Indiana",
+      outFields: ["*"],
+      visible: false,
+      popupTemplate: {
+        title: "Stream: {GNIS_NAME}",
+        content: "Type: {FCODE}"
+      }
+    });
+    map.add(nhdStreamsLayer);
+  }
+  
+  // Add layers to the map
+  addLayersToMap();
 
-  // Create a Sketch widget for drawing polygons
+// =======================
+// WIDGET SETUP
+// =======================
+
+function addWidgetsToMap() {
+  // Sketch Widget for drawing polygons
   const sketch = new Sketch({
     layer: graphicsLayer,
     view: view,
@@ -97,19 +112,111 @@ require([
   });
   view.ui.add(sketch, "top-right");
 
-  // Add a Layer List widget to control the visibility of layers
+  // Move the default zoom widget to the bottom-right position
+  view.ui.move("zoom", "bottom-right");
+
+
+  // Search Widget
+  const search = new Search({
+    view: view
+  });
+  view.ui.add(search, "bottom-right");
+
+  // Fullscreen Widget
+  const fullscreen = new Fullscreen({
+    view: view
+  });
+  view.ui.add(fullscreen, "bottom-left");
+
+  // =======================
+  // Basemap Gallery Widget (Initially hidden)
+  // =======================
+  const customBasemap = new Basemap({
+    portalItem: {
+      id: "46a87c20f09e4fc48fa3c38081e0cae6" // Custom basemap
+    }
+  });
+
+  const basemapGallery = new BasemapGallery({
+    view: view,
+    source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid"), customBasemap] // Use standard and custom basemaps
+  });
+
+  // Create a container for the Basemap Gallery and set initial visibility to none
+  const basemapGalleryDiv = document.createElement("div");
+  basemapGalleryDiv.style.display = "none"; // Initially hidden
+  basemapGallery.container = basemapGalleryDiv;
+  view.ui.add(basemapGalleryDiv, {
+    position: "top-right"
+  });
+
+  // Add a button to toggle the visibility of the Basemap Gallery
+  const basemapToggleButton = document.createElement("button");
+  basemapToggleButton.innerHTML = "🗺️ Basemaps";
+  basemapToggleButton.style.padding = "10px";
+  basemapToggleButton.style.backgroundColor = "#0079c1";
+  basemapToggleButton.style.color = "white";
+  basemapToggleButton.style.border = "none";
+  basemapToggleButton.style.cursor = "pointer";
+
+  // Toggle the visibility of the Basemap Gallery when the button is clicked
+  basemapToggleButton.addEventListener("click", function() {
+    if (basemapGalleryDiv.style.display === "none") {
+      basemapGalleryDiv.style.display = "block"; // Show the Basemap Gallery
+    } else {
+      basemapGalleryDiv.style.display = "none"; // Hide the Basemap Gallery
+    }
+  });
+
+  // Add the Basemap toggle button to the view
+  view.ui.add(basemapToggleButton, "top-left");
+
+  // =======================
+  // Layer List Widget (Initially hidden)
+  // =======================
   const layerList = new LayerList({
     view: view,
     container: document.createElement("div")
   });
-  layerList.container.classList.add("custom-layerlist");
-  view.ui.add(layerList.container, {
+  const layerListDiv = layerList.container;
+  layerListDiv.style.display = "none"; // Initially hidden
+  layerList.container = layerListDiv;
+  view.ui.add(layerListDiv, {
     position: "top-left"
   });
 
+  // Add a button to toggle the visibility of the Layer List
+  const layerListToggleButton = document.createElement("button");
+  layerListToggleButton.innerHTML = "📋 Layers";
+  layerListToggleButton.style.padding = "10px";
+  layerListToggleButton.style.backgroundColor = "#0079c1";
+  layerListToggleButton.style.color = "white";
+  layerListToggleButton.style.border = "none";
+  layerListToggleButton.style.cursor = "pointer";
 
+  // Toggle the visibility of the Layer List when the button is clicked
+  layerListToggleButton.addEventListener("click", function() {
+    if (layerListDiv.style.display === "none") {
+      layerListDiv.style.display = "block"; // Show the Layer List
+    } else {
+      layerListDiv.style.display = "none"; // Hide the Layer List
+    }
+  });
 
-  // Sequestration rates (tons per hectare per year)
+  // Add the Layer List toggle button to the view
+  view.ui.add(layerListToggleButton, "top-left");
+}
+
+// Add widgets to the map
+addWidgetsToMap();
+
+ 
+
+  // =======================
+  // ENVIRONMENTAL BENEFIT CALCULATIONS
+  // =======================
+
+  // Sequestration, retention, and habitat scores (tons per hectare per year, cubic meters per hectare per year, etc.)
   const sequestrationRates = {
     "agriculture": 0.5,
     "forest": 3.0,
@@ -123,7 +230,6 @@ require([
     "reforestation": 3.0
   };
 
-  // Stormwater retention rates (cubic meters per hectare per year)
   const retentionRates = {
     "agriculture": 300,
     "forest": 1000,
@@ -137,7 +243,6 @@ require([
     "reforestation": 1200
   };
 
-  // Habitat scores (arbitrary units per hectare)
   const habitatScores = {
     "agriculture": 5,
     "forest": 100,
@@ -151,67 +256,64 @@ require([
     "reforestation": 100
   };
 
-// Function to calculate benefits based on land use change
-function calculateBenefits(currentUse, futureUse, areaInHectares) {
-  // Calculate total carbon sequestration for current and future land uses
-  const currentTotalSequestration = sequestrationRates[currentUse] * areaInHectares;
-  const futureTotalSequestration = sequestrationRates[futureUse] * areaInHectares;
-  const carbonSequestrationChange = futureTotalSequestration - currentTotalSequestration;
+  // Calculate benefits based on land use change
+  function calculateBenefits(currentUse, futureUse, areaInHectares) {
+    const currentTotalSequestration = sequestrationRates[currentUse] * areaInHectares;
+    const futureTotalSequestration = sequestrationRates[futureUse] * areaInHectares;
+    const carbonSequestrationChange = futureTotalSequestration - currentTotalSequestration;
 
-  // Calculate total stormwater retention for current and future land uses
-  const currentTotalRetention = retentionRates[currentUse] * areaInHectares;
-  const futureTotalRetention = retentionRates[futureUse] * areaInHectares;
-  const stormwaterRetentionChange = futureTotalRetention - currentTotalRetention;
+    const currentTotalRetention = retentionRates[currentUse] * areaInHectares;
+    const futureTotalRetention = retentionRates[futureUse] * areaInHectares;
+    const stormwaterRetentionChange = futureTotalRetention - currentTotalRetention;
 
-  // Calculate habitat quality change (per hectare change applied to the total area)
-  const habitatScoreChange = (habitatScores[futureUse] - habitatScores[currentUse]) * areaInHectares;
+    const habitatScoreChange = (habitatScores[futureUse] - habitatScores[currentUse]) * areaInHectares;
 
-  return {
-    currentTotalSequestration,
-    futureTotalSequestration,
-    carbonSequestrationChange,
-    currentTotalRetention,
-    futureTotalRetention,
-    stormwaterRetentionChange,
-    habitatScoreChange,
-    areaInHectares
-  };
-}
+    return {
+      currentTotalSequestration,
+      futureTotalSequestration,
+      carbonSequestrationChange,
+      currentTotalRetention,
+      futureTotalRetention,
+      stormwaterRetentionChange,
+      habitatScoreChange,
+      areaInHectares
+    };
+  }
 
-// Event listener for the "Calculate Benefits" button
-document.getElementById("calculateBtn").addEventListener("click", function() {
-  const currentLandUse = document.getElementById("currentLandUse").value;
-  const futureLandUse = document.getElementById("futureLandUse").value;
+  // Event listener for calculating benefits
+  document.getElementById("calculateBtn").addEventListener("click", function() {
+    const currentLandUse = document.getElementById("currentLandUse").value;
+    const futureLandUse = document.getElementById("futureLandUse").value;
 
-  // Get the polygon geometry from the graphics layer
-  const polygon = graphicsLayer.graphics.getItemAt(0).geometry;
+    // Get the polygon geometry from the graphics layer
+    const polygon = graphicsLayer.graphics.getItemAt(0).geometry;
 
-  // Calculate the area in square meters and convert to hectares
-  const areaInSquareMeters = geometryEngine.geodesicArea(polygon, "square-meters");
-  const areaInHectares = areaInSquareMeters / 10000; // Convert square meters to hectares
+    // Calculate the area in square meters and convert to hectares
+    const areaInSquareMeters = geometryEngine.geodesicArea(polygon, "square-meters");
+    const areaInHectares = areaInSquareMeters / 10000; // Convert square meters to hectares
 
-  // Calculate the benefits
-  const benefits = calculateBenefits(currentLandUse, futureLandUse, areaInHectares);
+    // Calculate the benefits
+    const benefits = calculateBenefits(currentLandUse, futureLandUse, areaInHectares);
 
-  // Display the results including the polygon area
-  document.getElementById("results").innerHTML = `
-    <h4>Environmental Benefits:</h4>
-    <p><strong>Area of the selected site:</strong> ${benefits.areaInHectares.toFixed(2)} hectares.</p>
+    // Display the results including the polygon area
+    document.getElementById("results").innerHTML = `
+      <h4>Environmental Benefits:</h4>
+      <p><strong>Area of the selected site:</strong> ${benefits.areaInHectares.toFixed(2)} hectares.</p>
 
-    <h5><strong>Carbon Sequestration:</strong></h5>
-    <ul>
-      <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalSequestration.toFixed(2)} tons of carbon.</li>
-      <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalSequestration.toFixed(2)} tons of carbon.</li>
-      <li><strong>Difference:</strong> ${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will be ${benefits.carbonSequestrationChange >= 0 ? "sequestered" : "released"}.</li>
-    </ul>
+      <h5><strong>Carbon Sequestration:</strong></h5>
+      <ul>
+        <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalSequestration.toFixed(2)} tons of carbon.</li>
+        <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalSequestration.toFixed(2)} tons of carbon.</li>
+        <li><strong>Difference:</strong> ${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will be ${benefits.carbonSequestrationChange >= 0 ? "sequestered" : "released"}.</li>
+      </ul>
 
-    <h5><strong>Stormwater Retention:</strong></h5>
-    <ul>
-      <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalRetention.toFixed(2)} cubic meters.</li>
-      <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalRetention.toFixed(2)} cubic meters.</li>
-      <li><strong>Difference:</strong> ${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters will be ${benefits.stormwaterRetentionChange >= 0 ? "retained" : "released"}.</li>
-    </ul>
+      <h5><strong>Stormwater Retention:</strong></h5>
+      <ul>
+        <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalRetention.toFixed(2)} cubic meters.</li>
+        <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalRetention.toFixed(2)} cubic meters.</li>
+        <li><strong>Difference:</strong> ${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters will be ${benefits.stormwaterRetentionChange >= 0 ? "retained" : "released"}.</li>
+      </ul>
+    `;
+  });
 
-  `;
-  console.log("Results displayed.");
-});})
+});
