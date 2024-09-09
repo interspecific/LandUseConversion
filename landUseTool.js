@@ -304,14 +304,14 @@ addWidgetsToMap();
       <ul>
         <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalSequestration.toFixed(2)} tons of carbon.</li>
         <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalSequestration.toFixed(2)} tons of carbon.</li>
-        <li><strong>Difference:</strong> ${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will be ${benefits.carbonSequestrationChange >= 0 ? "sequestered" : "released"}.</li>
+        <li><strong>Difference:</strong> ${Math.abs(benefits.carbonSequestrationChange.toFixed(2))} tons of carbon will ${benefits.carbonSequestrationChange >= 0 ? "be sequestered. Carbon Dioxide that has been accumulating in the atmosphere in high concentrations due to human interference with the carbon cycle will now be utilized by plants and will be turned into energy for the surrounding ecosystems." : "not be sequestered in vegetation or soil ecosystems and will remain in the atmosphere."}.</li>
       </ul>
 
       <h5><strong>Stormwater Retention:</strong></h5>
       <ul>
-        <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalRetention.toFixed(2)} cubic meters.</li>
-        <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalRetention.toFixed(2)} cubic meters.</li>
-        <li><strong>Difference:</strong> ${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters will be ${benefits.stormwaterRetentionChange >= 0 ? "retained" : "released"}.</li>
+        <li><strong>Total for Current Land Use:</strong> ${benefits.currentTotalRetention.toFixed(2)} cubic meters of water.</li>
+        <li><strong>Total for Future Land Use:</strong> ${benefits.futureTotalRetention.toFixed(2)} cubic meters of water.</li>
+        <li><strong>Difference:</strong> ${Math.abs(benefits.stormwaterRetentionChange.toFixed(2))} cubic meters of water will  ${benefits.stormwaterRetentionChange >= 0 ? "be retained. this quantity of water will not contribute to flooding or erosion. This water will be utilized by plants and wildlife and will be captured in place to percolate into the soil." : "not be retained, and will be displaced as surface runoff"}.</li>
       </ul>
     `;
   });
