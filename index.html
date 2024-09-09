@@ -3,7 +3,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title>Land Use Conversion Calculator</title>
+  <title>Quantify Effects of Land Use Change</title>
   <!-- Load ArcGIS API for JavaScript -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.27/"></script>
@@ -200,7 +200,12 @@ select {
   <div id="viewDiv"></div>
 
   <!-- Page Title -->
-  <h1 id="pageTitle">Land Use Conversion Calculator</h1>  
+  <h1 id="pageTitle">Calculate the Effects of Land Use Change</h1>
+  
+  <!-- Subheader -->
+  <h3 id="subHeader" style="font-size: 1.5em; color: #666; text-align: center; font-weight: normal; margin-top: -10px;">
+    A tool to evaluate changes to carbon sequestration and stormwater retention based on changes to land use
+  </h3>
 
   <!-- Accordion Section -->
   <div class="accordion-container">
@@ -224,7 +229,7 @@ select {
       
       <p>4. <strong>Choose the Desired Future Land Use:</strong> After drawing the area, select the type of land use you intend to convert the area into from the "Future Land Use" dropdown menu. Possible future uses include options like forest, wetlands, urban development, garden, or prairie/meadow restoration.</p>
       
-      <p>5. <strong>Calculate the Environmental Benefits:</strong> Click the "Calculate Benefits" button to generate an analysis of the environmental benefits associated with converting the current land use to the selected future land use. This analysis will consider factors such as carbon sequestration, stormwater retention, and habitat quality improvement.</p>
+      <p>5. <strong>Calculate the Environmental Benefits:</strong> Click the "Find Land Use Change Impacts" button to generate an analysis of the environmental changes associated with converting the current land use to the selected future land use. This analysis will consider factors such as carbon sequestration, stormwater retention, and habitat quality improvement.</p>
       
       <p>6. <strong>Review the Results:</strong> The results of your analysis will be displayed below the form. These results will provide estimates of how much carbon will be sequestered, the amount of stormwater that can be retained, and the expected improvements in habitat quality as a result of the land use change.</p>
       
@@ -240,16 +245,17 @@ select {
  
   <ul>
     <li><strong>Carbon Sequestration:</strong> 
-      Estimates are based on data from authoritative sources like the Intergovernmental Panel on Climate Change (IPCC), which provide  information on the carbon sequestration potential of various ecosystems. Tropical forests, for example, can sequester up to 120 tonnes of carbon per hectare in vegetation alone, making them one of the most effective natural carbon sinks. Wetlands, on the other hand, are exceptionally effective in soil carbon storage, holding up to 643 tonnes per hectare of soil carbon, nearly six times more than tropical forests. Forests globally absorb approximately 15.6 billion tonnes of CO2 annually, about 40% of global CO2 emissions, underscoring their critical role in achieving net-zero emissions by 2050.
+      Estimates are based on data from authoritative sources like the Intergovernmental Panel on Climate Change (IPCC), which provide information on the carbon sequestration potential of various ecosystems. Tropical forests, for example, can sequester up to 120 tonnes of carbon per hectare in vegetation alone, making them one of the most effective natural carbon sinks. Wetlands, on the other hand, are exceptionally effective in soil carbon storage, holding up to 643 tonnes per hectare of soil carbon, nearly six times more than tropical forests. Forests globally absorb approximately 15.6 billion tonnes of CO2 annually, about 40% of global CO2 emissions, underscoring their critical role in achieving net-zero emissions by 2050.
       
       <br><br>
       <strong>Methodology:</strong> The calculation for carbon sequestration is based on the following formula:
-  
+      <br><br>
       <div style="margin-left: 20px; font-family: Arial, sans-serif;">
         <strong>Total Carbon Sequestration</strong> = <strong>Sequestration Rate</strong> × <strong>Area</strong>
       </div>
-  
+      <br><br>
       Here, the <strong>Sequestration Rate</strong> is the amount of carbon sequestered per hectare per year, specific to the ecosystem type, and the <strong>Area</strong> is the size of the land in hectares. The tool multiplies these rates by the area of the land to estimate the total carbon sequestration over a given period.
+      <br><br>
     </li>
     
     <li><strong>Stormwater Retention:</strong> 
@@ -257,12 +263,13 @@ select {
       
       <br><br>
       <strong>Methodology:</strong> The stormwater retention calculation is based on the following formula:
-  
+      <br><br>
       <div style="margin-left: 20px; font-family: Arial, sans-serif;">
         <strong>Total Stormwater Retention</strong> = <strong>Retention Rate</strong> × <strong>Area</strong>
       </div>
-  
+      <br><br>
       Here, the <strong>Retention Rate</strong> is the volume of stormwater retained per hectare per year for a given land use type, and the <strong>Area</strong> is the size of the land in hectares. The tool calculates the total stormwater retention by multiplying these rates by the area under consideration.
+      <br><br>
     </li>
     
     <li><strong>Habitat Quality and Biodiversity:</strong> 
@@ -270,43 +277,47 @@ select {
       
       <br><br>
       <strong>Methodology:</strong> Habitat quality is quantified using the following formula:
-  
+      <br><br>
       <div style="margin-left: 20px; font-family: Arial, sans-serif;">
         <strong>Habitat Quality Score</strong> = <strong>Baseline Score</strong> + (<strong>Land Use Change Factor</strong> × <strong>Area</strong>)
       </div>
-  
+      <br><br>
       The <strong>Baseline Score</strong> represents the initial habitat quality before any land use changes, and the <strong>Land Use Change Factor</strong> reflects the potential improvement or degradation due to the change. The tool evaluates how changes in land use can either improve or degrade habitat quality by applying a score to each land use type, based on ecological studies.
     </li>
   </ul>
   
-  
-  </ul>
-
   <h4>Context and Importance</h4>
   <p>As the world grapples with the issues of climate change, habitat and biodiversity loss, and environmental contamination, the way we use and manage land has become critically important. Urbanization, deforestation, and the conversion of natural landscapes into agricultural or developed land are major drivers of greenhouse gas emissions, loss of ecosystems, and poor environmental quality.</p>
   
   <p>This tool serves as a practical method to address these issues. By converting underutilized or degraded land into more sustainable uses—such as reforestation, wetland restoration, or the creation of urban green spaces—communities can:</p>
+  
   <ul>
     <li><strong>Mitigate Climate Change:</strong> 
       Land conversion to forested areas or wetlands can significantly increase carbon sequestration, reducing the amount of carbon dioxide in the atmosphere. Reforestation efforts in tropical regions can sequester up to 40.7 tonnes of CO2 per hectare per year during the first 20 years of growth, making it a highly effective strategy for climate change mitigation. Wetlands also play a crucial role in carbon sequestration, particularly in their soil, which holds significantly more carbon than other ecosystems.
+      <br><br>
     </li>
     
     <li><strong>Improve Environmental Quality:</strong> 
       Green spaces act as natural filters, improving air and water quality, reducing urban heat islands, and managing stormwater runoff more effectively. In urban environments, green infrastructure such as permeable pavements and rain gardens can reduce stormwater runoff by increasing infiltration, thereby reducing the burden on stormwater systems and improving water quality. These practices not only manage water more effectively but also enhance the aesthetic and recreational value of urban spaces.
+      <br><br>
     </li>
     
     <li><strong>Increase Habitat and Promote Biodiversity:</strong> 
       Restoring natural habitats supports a wide range of plant and animal species, promoting biodiversity and increasing the resilience of ecosystems. Reforestation not only sequesters carbon but also restores habitats for wildlife, enhancing biodiversity and ecosystem services. Urban green spaces and restored natural areas can also provide critical habitat for species in increasingly fragmented landscapes, helping to mitigate the impacts of urbanization on biodiversity.
+      <br><br>
     </li>
     
     <li><strong>Enhance Community Well-being:</strong> 
       Access to green spaces and natural areas is linked to improved mental and physical health, offering recreational opportunities and enhancing the quality of life in urban environments. Green spaces provide essential services, including temperature regulation, air purification, and social cohesion, all of which contribute to the well-being of urban residents. The presence of natural areas within cities can also foster a greater connection to nature among residents, encouraging stewardship and sustainable behavior, which are critical for long-term environmental sustainability.
+      <br><br>
     </li>
   </ul>
 
 
-  
-
+  <!-- Disclaimer -->
+  <h4>Disclaimer</h4>
+  <p>The calculations provided by this tool are based on credible and authoritative data sources, as cited. However, all results are approximate and should be used as estimates for planning purposes. This tool is intended to support environmentally positive decision-making, and users are encouraged to use it with the goal of promoting sustainable land use changes.</p>
+<br><br>
 
 </div>
 
@@ -315,16 +326,7 @@ select {
 
 <!-- Panel for Resources -->
 <div class="panel">
-  <h4>Additional Sources</h4>
-  <ul>
-    <li><a href="https://www.epa.gov/eco-research/ecosystem-services-research" target="_blank">EPA Ecosystem Services Research Program</a></li>
-    <li><a href="https://www.fs.usda.gov/ecosystemservices/carbon.shtml" target="_blank">USDA Forest Service - Valuing Ecosystem Services</a></li>
-    <li><a href="https://coast.noaa.gov/" target="_blank">NOAA Office for Coastal Management</a></li>
-    <li><a href="https://www.mrlc.gov/" target="_blank">National Land Cover Database (NLCD)</a></li>
-    <li><a href="https://www.nature.org/en-us/what-we-do/our-priorities/tackle-climate-change/" target="_blank">The Nature Conservancy Climate Change Goals for 2030</a></li>
-    <li><a href="https://www.ipcc.ch/report/ar6/syr/" target="_blank">Intergovernmental Panel for Climate Change (IPCC) Reports</a></li>
-    <li><a href="https://usfs.maps.arcgis.com/apps/MinimalGallery/index.html?appid=74a3d16ebea445e1b8c81423081e8fd1">US Forest Service Data Dashboard</a></a></li>
-  </ul>
+ 
 
   <h4>References</h4>
   <ul>
@@ -339,6 +341,17 @@ select {
     <li>Center for Watershed Protection. (2007). Managing Stormwater with Green Infrastructure: Chapter 3. Retrieved from <a href="https://www.cwp.org" target="_blank">https://www.cwp.org</a></li>
   </ul>
 
+  <h4>Additional Sources</h4>
+  <ul>
+    <li><a href="https://www.epa.gov/eco-research/ecosystem-services-research" target="_blank">EPA Ecosystem Services Research Program</a></li>
+    <li><a href="https://www.fs.usda.gov/ecosystemservices/carbon.shtml" target="_blank">USDA Forest Service - Valuing Ecosystem Services</a></li>
+    <li><a href="https://coast.noaa.gov/" target="_blank">NOAA Office for Coastal Management</a></li>
+    <li><a href="https://www.mrlc.gov/" target="_blank">National Land Cover Database (NLCD)</a></li>
+    <li><a href="https://www.nature.org/en-us/what-we-do/our-priorities/tackle-climate-change/" target="_blank">The Nature Conservancy Climate Change Goals for 2030</a></li>
+    <li><a href="https://www.ipcc.ch/report/ar6/syr/" target="_blank">Intergovernmental Panel for Climate Change (IPCC) Reports</a></li>
+    <li><a href="https://usfs.maps.arcgis.com/apps/MinimalGallery/index.html?appid=74a3d16ebea445e1b8c81423081e8fd1">US Forest Service Data Dashboard</a></a></li>
+  </ul>
+
   <h4>IPCC Statistics</h4>
   <p></p>
   <ul>
@@ -347,14 +360,16 @@ select {
             <li>To limit global warming to 1.5°C, the world has a remaining carbon budget of approximately 420 gigatonnes of CO2 (GtCO2) as of 2018. Exceeding this budget increases the risk of severe climate impacts, including more frequent and intense extreme weather events, sea level rise, and ecosystem loss.</li>
             <li>The carbon budget for a 2°C warming limit is slightly larger, around 580 GtCO2, but even this threshold poses significant risks, especially for vulnerable communities and ecosystems.</li>
         </ul>
-    </li>
+        <br><br>
+      </li>
 
     <li><strong>Land Degradation and Human Impacts:</strong>
         <ul>
             <li>Human activities, including agriculture, deforestation, and urbanization, have already caused significant land degradation, affecting nearly 25% of the Earth's ice-free land area. This degradation leads to reduced productivity, biodiversity loss, and diminished ecosystem services, further exacerbating climate change.</li>
             <li>Land degradation contributes to the loss of 23% of total anthropogenic greenhouse gas emissions, primarily from agriculture, forestry, and other land uses (AFOLU). The restoration of degraded lands is therefore critical for reducing emissions and enhancing carbon sinks.</li>
         </ul>
-    </li>
+        <br><br>
+      </li>
 
     <li><strong>Biodiversity Loss and Species Extinction:</strong>
         <ul>
@@ -362,28 +377,32 @@ select {
             <li>Insects, which play critical roles in pollination, nutrient cycling, and as a food source for other species, are particularly vulnerable. Studies indicate that 40% of insect species are at risk of extinction over the next few decades due to habitat loss, pollution, climate change, and overuse of pesticides.</li>
             <li>Future projections suggest that continued biodiversity loss could result in the collapse of ecosystems that are vital for human survival, such as those providing food, clean water, and air. The loss of biodiversity also undermines the resilience of ecosystems, reducing their ability to adapt to climate change.</li>
         </ul>
-    </li>
+        <br><br>
+      </li>
 
     <li><strong>Role of Forests and Wetlands in Carbon Sequestration:</strong>
         <ul>
             <li>Forests globally absorb about 15.6 billion tonnes of CO2 annually, which is equivalent to around 40% of global CO2 emissions. This makes forest conservation and reforestation key strategies for climate mitigation.</li>
             <li>Wetlands, which store up to 643 tonnes of carbon per hectare in their soil, are among the most effective natural carbon sinks. Protecting existing wetlands and restoring degraded ones are vital actions for maintaining their carbon storage capacity.</li>
         </ul>
-    </li>
+        <br><br>
+      </li>
 
     <li><strong>Climate Mitigation through Sustainable Land Management:</strong>
         <ul>
             <li>Sustainable land management practices, such as agroforestry, improved crop and livestock management, and soil carbon sequestration, can contribute to reducing emissions while enhancing food security and resilience to climate impacts.</li>
             <li>The IPCC emphasizes the importance of integrating land management with broader climate strategies, such as reducing deforestation, promoting reforestation, and enhancing soil carbon storage, to achieve significant and lasting climate benefits.</li>
         </ul>
-    </li>
+        <br><br>
+      </li>
 
     <li><strong>Water Resources and Climate Change:</strong>
         <ul>
             <li>Climate change is intensifying the global water cycle, leading to more extreme weather events, including floods and droughts. These changes are expected to exacerbate water scarcity, particularly in regions that are already vulnerable.</li>
             <li>Integrated water management approaches that consider the interconnections between water, land, and ecosystems are essential for ensuring sustainable water use and resilience in the face of climate change.</li>
         </ul>
-    </li>
+        <br><br>
+      </li>
 
     <li><strong>Economic and Social Impacts of Climate Change:</strong>
         <ul>
@@ -393,78 +412,108 @@ select {
     </li>
 </ul>
 
+
 </div>
 
 
 
-  <!-- Form for Land Use Input -->
-  <div id="inputForm">
-    <h3>Land Use Change Information</h3>
-    <label for="currentLandUse">Current Land Use:</label>
-    <select id="currentLandUse">
-      <option value="agriculture">Agriculture</option>
-      <option value="forest">Forest</option>
-      <option value="urban">Urban</option>
-      <option value="wetlands">Wetlands</option>
-      <option value="invasivePlants">Invasive Plants/Overgrown</option>
-      <option value="grassLawn">Grass Lawn</option>
-      <option value="bareSoil">Bare Soil</option>
-    </select><br><br>
+<!-- Form for Land Use Input -->
+<div id="inputForm">
+  <h3>Land Use Change Information</h3>
 
-    <label for="futureLandUse">Future Land Use:</label>
-    <select id="futureLandUse">
-      <option value="forest">Forest</option>
-      <option value="wetlands">Wetlands</option>
-      <option value="urban">Urban</option>
-      <option value="garden">Garden</option>
-      <option value="prairieMeadow">Prairie/Meadow Restoration</option>
-      <option value="reforestation">Reforestation</option>
-    </select><br><br>
+  <label for="currentLandUse">Current Land Use:</label>
+  <select id="currentLandUse"></select><br><br>
 
-    <!-- Calculate Benefits Button on a separate line -->
-    <div style="margin-bottom: 10px;">
-      <button id="calculateBtn">Calculate Benefits</button>
-    </div>
+  <label for="futureLandUse">Future Land Use:</label>
+  <select id="futureLandUse"></select><br><br>
 
-    <!-- Other buttons on the next line -->
-    <div>
-      <button id="exportBtn">Export as CSV</button>
-      <button id="exportGeoJSONBtn">Export as GeoJSON</button>
-      <button id="exportReport" style="margin-top: 10px;">Generate PDF Report</button>
-    </div>
-    
-    <!-- Results section -->
-    <div id="results">
-      <!-- This is where the calculation results will be displayed -->
-    </div>
+  <!-- Calculate Benefits Button on a separate line -->
+  <div style="margin-bottom: 10px;">
+    <button id="calculateBtn">Find Land Use Change Impacts</button>
   </div>
 
-  <!-- Include JavaScript for Accordion Functionality -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var acc = document.getElementsByClassName("accordion");
-      var allPanels = document.getElementsByClassName("panel");
-      for (var i = 0; i < acc.length; i++) {
-        acc[i].index = i;  // Assign an index to each accordion button
-        acc[i].addEventListener("click", function() {
-          var panel = allPanels[this.index];  // Use the index to find the corresponding panel
-          this.classList.toggle("active");
-          if (panel.style.maxHeight) {
-            panel.style.maxHeight = null; // Collapse panel
-          } else {
-            // Collapse all other panels
-            for (var j = 0; j < allPanels.length; j++) {
-              allPanels[j].style.maxHeight = null;
-            }
-            panel.style.maxHeight = panel.scrollHeight + "px"; // Expand the current panel
-          }
-        });
-      }
-    });
-  </script>
+  <!-- Other buttons on the next line -->
+  <div>
+    <button id="exportBtn">Export as CSV</button>
+    <button id="exportGeoJSONBtn">Export as GeoJSON</button>
+    <button id="exportReport" style="margin-top: 10px;">Generate PDF Report</button>
+  </div>
 
-  <!-- Include JavaScript for Land Use Tool -->
-  <script src="landUseTool.js"></script>
+  <!-- Results section -->
+  <div id="results">
+    <!-- This is where the calculation results will be displayed -->
+  </div>
+</div>
+
+<!-- Include JavaScript for Accordion Functionality -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var acc = document.getElementsByClassName("accordion");
+    var allPanels = document.getElementsByClassName("panel");
+    for (var i = 0; i < acc.length; i++) {
+      acc[i].index = i;  // Assign an index to each accordion button
+      acc[i].addEventListener("click", function() {
+        var panel = allPanels[this.index];  // Use the index to find the corresponding panel
+        this.classList.toggle("active");
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null; // Collapse panel
+        } else {
+          // Collapse all other panels
+          for (var j = 0; j < allPanels.length; j++) {
+            allPanels[j].style.maxHeight = null;
+          }
+          panel.style.maxHeight = panel.scrollHeight + "px"; // Expand the current panel
+        }
+      });
+    }
+  });
+
+  // Shared list of land use types
+  const landUseTypes = [
+    { value: "agriculture", label: "Agriculture" },
+    { value: "forest", label: "Forest" },
+    { value: "urban", label: "Urban" },
+    { value: "wetlands", label: "Wetlands" },
+    { value: "invasivePlants", label: "Invasive Plants/Overgrown" },
+    { value: "grassLawn", label: "Grass Lawn" },
+    { value: "bareSoil", label: "Bare Soil" },
+    { value: "garden", label: "Garden" },
+    { value: "prairieMeadow", label: "Prairie/Meadow Restoration" },
+    { value: "reforestation", label: "Reforestation" }
+  ];
+
+  // Function to populate both dropdowns
+  function populateLandUseDropdowns() {
+    const currentLandUseSelect = document.getElementById("currentLandUse");
+    const futureLandUseSelect = document.getElementById("futureLandUse");
+
+    // Clear existing options
+    currentLandUseSelect.innerHTML = "";
+    futureLandUseSelect.innerHTML = "";
+
+    // Populate options for both dropdowns
+    landUseTypes.forEach(landUse => {
+      const optionCurrent = document.createElement("option");
+      optionCurrent.value = landUse.value;
+      optionCurrent.textContent = landUse.label;
+
+      const optionFuture = document.createElement("option");
+      optionFuture.value = landUse.value;
+      optionFuture.textContent = landUse.label;
+
+      // Append options to both select elements
+      currentLandUseSelect.appendChild(optionCurrent);
+      futureLandUseSelect.appendChild(optionFuture);
+    });
+  }
+
+  // Call the function to populate the dropdowns when the page loads
+  document.addEventListener("DOMContentLoaded", populateLandUseDropdowns);
+</script>
+
+<!-- Include JavaScript for Land Use Tool -->
+<script src="landUseTool.js"></script>
+
 
 
 
