@@ -118,6 +118,12 @@ function addWidgetsToMap() {
   });
   view.ui.add(sketch, "top-right");
 
+    // =======================
+  // Move the Zoom Widget to Bottom Right
+  // =======================
+  view.ui.move("zoom", "bottom-right");
+
+  
   // =======================
   // Search Widget
   // =======================
@@ -204,10 +210,7 @@ function addWidgetsToMap() {
   const layerListToggleButton = createToggleButton("📋 Layers", layerListDiv);
   view.ui.add(layerListToggleButton, "top-left");  
 
-  // =======================
-  // Move the Zoom Widget to Bottom Right
-  // =======================
-  view.ui.move("zoom", "bottom-right");
+
 
 }
 
