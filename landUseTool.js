@@ -316,4 +316,49 @@ addWidgetsToMap();
     `;
   });
 
+
+// Function to calculate current carbon sequestration and stormwater retention values
+function quantifyCurrentValues(currentUse, areaInHectares) {
+  const currentTotalSequestration = sequestrationRates[currentUse] * areaInHectares;
+  const currentTotalRetention = retentionRates[currentUse] * areaInHectares;
+
+  return {
+    currentTotalSequestration,
+    currentTotalRetention,
+    areaInHectares
+  };
+}
+
+    // Event listener for the new "Quantify Current Values" button
+    document.getElementById("quantifyBtn").addEventListener("click", function() {
+      const currentLandUse = document.getElementById("currentLandUse").value;
+
+      // Get the polygon geometry from the graphics layer
+      const polygon = graphicsLayer.graphics.getItemAt(0).geometry;
+
+      // Calculate the area in square meters and convert to hectares
+      const areaInSquareMeters = geometryEngine.geodesicArea(polygon, "square-meters");
+      const areaInHectares = areaInSquareMeters / 10000; // Convert square meters to hectares
+
+      // Calculate the current values
+      const values = quantifyCurrentValues(currentLandUse, areaInHectares);
+
+      // Display the results
+      document.getElementById("results").innerHTML = `
+        <h4>Current Land Use Values:</h4>
+        <p><strong>Area of the selected site:</strong> ${values.areaInHectares.toFixed(2)} hectares.</p>
+
+        <h5><strong>Carbon Sequestration:</strong></h5>
+        <ul>
+          <li><strong>Total for Current Land Use:</strong> ${values.currentTotalSequestration.toFixed(2)} tons of carbon.</li>
+        </ul>
+
+        <h5><strong>Stormwater Retention:</strong></h5>
+        <ul>
+          <li><strong>Total for Current Land Use:</strong> ${values.currentTotalRetention.toFixed(2)} cubic meters.</li>
+        </ul>
+      `;
+    });
+
+
 });

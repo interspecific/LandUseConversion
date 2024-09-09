@@ -212,9 +212,11 @@ select {
     <!-- Accordion for Instructions -->
     <button class="accordion">Instructions</button>
     <!-- Accordion for How Can This Tool Be Used? -->
-    <button class="accordion">About</button>    
+    <button class="accordion">About</button>   
+    <!-- Accordion for Use Cases -->
+    <button class="accordion">Use Cases</button>        
     <!-- Accordion for Resources -->
-    <button class="accordion">Resources</button>
+    <button class="accordion">Resources</button> 
   </div>
 
   <!-- Panels Section -->
@@ -321,7 +323,57 @@ select {
 
 </div>
 
+<!-- Panel for Use Cases -->
+<div class="panel">
+  <h4>Use Cases</h4>
+  <ul>
+    <li><strong>Curious about how much ecosystem services your land provides?</strong>  
+      Have you ever wondered how much carbon your backyard garden, forest, wetland, or meadow sequesters each year, or how much stormwater they prevent from flooding nearby areas? This tool can give you insights into the critical ecosystem services provided by the land around you.
+      <br><br>    
+    </li>
+    
+    <li><strong>Assess the environmental impact of new developments</strong>  
+      Planning or witnessing the development of a new housing subdivision? Curious about how the destruction of wetlands or forests to make way for new homes could impact carbon sequestration, flood mitigation, or biodiversity? This tool allows you to quantify the negative effects of such land use changes on local and global ecosystems.
+      <br><br>    
+    </li>
 
+    <li><strong>Understand the costs of converting forests to agriculture</strong>  
+      Are you considering the logging of a woodlot to turn it into agricultural land? Use this tool to evaluate the environmental trade-offs. Discover how much carbon will be lost in the process and how much stormwater retention will be reduced, potentially leading to increased local erosion and flood risks.
+      <br><br>    
+    </li>
+
+    <li><strong>Explore the benefits of environmental restoration projects</strong>  
+      Are you involved in environmental restoration or curious about the benefits of such projects? This tool helps quantify how reforestation, wetland restoration, or the creation of urban green spaces contribute to positive environmental outcomes, including stormwater management, biodiversity improvement, and carbon sequestration.
+      <br><br>    
+    </li>
+
+    <li><strong>Evaluate the environmental costs and benefits of landscaping choices</strong>  
+      Are you planning a landscaping project and want to ensure that your choices will support sustainability? Use this tool to compare how different types of land use—whether it’s a garden, a prairie, or a grass lawn—will influence carbon storage, water retention, and habitat quality.
+      <br><br>    
+    </li>
+
+    <li><strong>Plan for climate change mitigation</strong>  
+      Are you part of a local government or conservation group interested in reducing the impacts of climate change in your area? This tool helps calculate how land use changes, such as converting bare soil to wetlands or urban areas to green spaces, can increase carbon sequestration and reduce the urban heat island effect, contributing to climate resilience.
+      <br><br>    
+    </li>
+
+    <li><strong>Assess the long-term impact of weakened wetland regulations</strong>  
+      Recent changes to Indiana’s wetland regulations, including Senate Bill 389, have significantly reduced protections for state-isolated wetlands, allowing developers more freedom to impact these crucial ecosystems without sufficient mitigation. Under the revised rules, wetlands that were previously protected under the Clean Water Act and the Indiana Wetlands Program by IDEM (Indiana Department of Environmental Management) no longer have the same level of protection. This weakening of wetland regulations not only puts wetlands at risk but also shifts the cost of flooding onto private landowners and local municipalities. With fewer requirements for stormwater management and mitigation, local governments may face increased financial burdens to address flood risks. This tool can help assess the impact of these regulatory changes on carbon sequestration, stormwater retention, and overall ecosystem health, providing critical data for understanding the long-term consequences of reduced wetland protections.
+      <br><br>    
+      <strong>See the links below to better understand how Indiana wetlands protection has been undermined by the Indiana Builder's Association and the state legislators who are affiliated:</strong>
+      <ul>
+        <li><a href="https://iga.in.gov/legislative/2021/bills/senate/389/details" target="_blank">Indiana Senate Bill 389</a></li>
+        <li><a href="https://www.hecweb.org/2024/03/11/opposing-hb-1383/" target="_blank">Opposing HB 1383 - HEC</a></li>
+        <li><a href="https://www.hecweb.org/oppose-sb-389/" target="_blank">Oppose SB 389 - HEC</a></li>
+        <li><a href="https://legiscan.com/IN/bill/SB0389/2021" target="_blank">LegiScan: SB 389 Bill Status</a></li>
+        <li><a href="https://www.indystar.com/story/news/environment/2024/01/30/state-water-regulators-speak-against-wetlands-bill-pushed-by-builders/72394209007/" target="_blank">IndyStar: Wetlands Bill Pushed by Builders</a></li>
+        <li><a href="https://www.npr.org/2024/02/20/1232769595/a-new-indiana-bill-will-weaken-protections-over-wetlands" target="_blank">NPR: Indiana Wetlands Protection Bill</a></li>
+        <li><a href="https://buildindiana.org/advocacy/priorityissues/" target="_blank">Indiana Builder's Association: Priority Issues</a></li>
+        <li><a href= "https://iga.in.gov/information/find-legislators" target="_blank">Find Your Legislator</a>      
+      </ul>
+    </li>
+  </ul>
+</div>
 
 
 <!-- Panel for Resources -->
@@ -343,6 +395,7 @@ select {
 
   <h4>Additional Sources</h4>
   <ul>
+    <li><a href= "https://iga.in.gov/information/find-legislators" target="_blank">Find Your Legislator</a>
     <li><a href="https://www.epa.gov/eco-research/ecosystem-services-research" target="_blank">EPA Ecosystem Services Research Program</a></li>
     <li><a href="https://www.fs.usda.gov/ecosystemservices/carbon.shtml" target="_blank">USDA Forest Service - Valuing Ecosystem Services</a></li>
     <li><a href="https://coast.noaa.gov/" target="_blank">NOAA Office for Coastal Management</a></li>
@@ -419,19 +472,35 @@ select {
 
 <!-- Form for Land Use Input -->
 <div id="inputForm">
-  <h3>Land Use Change Information</h3>
+  <h3>Land Use Information</h3>
 
-  <label for="currentLandUse">Current Land Use:</label>
-  <select id="currentLandUse"></select><br><br>
+  <label for="currentLandUse">Select Land Use:</label>
+  <select id="currentLandUse">
+    <option value="agriculture">Agriculture</option>
+    <option value="forest">Forest</option>
+    <option value="urban">Urban</option>
+    <option value="wetlands">Wetlands</option>
+    <option value="invasivePlants">Invasive Plants/Overgrown</option>
+    <option value="grassLawn">Grass Lawn</option>
+    <option value="bareSoil">Bare Soil</option>
+  </select><br><br>
 
-  <label for="futureLandUse">Future Land Use:</label>
-  <select id="futureLandUse"></select><br><br>
+  <label for="futureLandUse">Select Future Land Use:</label>
+  <select id="futureLandUse">
+    <!-- The options will be populated dynamically via JavaScript -->
+  </select><br><br>
+
 
   <!-- Calculate Benefits Button on a separate line -->
   <div style="margin-bottom: 10px;">
     <button id="calculateBtn">Find Land Use Change Impacts</button>
   </div>
 
+  <!-- New Button for Quantifying Current Land Use Values -->
+  <div style="margin-bottom: 10px;">
+    <button id="quantifyBtn">Quantify Values of Existing Land Use</button>
+  </div>  
+  <br><br>
   <!-- Other buttons on the next line -->
   <div>
     <button id="exportBtn">Export as CSV</button>
