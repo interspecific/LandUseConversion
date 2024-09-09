@@ -6,13 +6,17 @@ require([
   "esri/layers/FeatureLayer",
   "esri/layers/ImageryLayer",
   "esri/widgets/LayerList",
-  "esri/widgets/Measurement",
+  "esri/widgets/AreaMeasurement2D",
   "esri/widgets/Search",
   "esri/geometry/geometryEngine",
   "esri/widgets/Fullscreen",
   "esri/widgets/BasemapGallery",
-  "esri/Basemap"
-], function(Map, MapView, Sketch, GraphicsLayer, FeatureLayer, ImageryLayer, LayerList, Measurement, Search, geometryEngine, Fullscreen, BasemapGallery, Basemap) {
+  "esri/Basemap",
+  "esri/widgets/Print"
+], function(
+  Map, MapView, Sketch, GraphicsLayer, FeatureLayer, ImageryLayer, LayerList, 
+  AreaMeasurement2D, Search, geometryEngine, Fullscreen, BasemapGallery, Basemap, Print
+) {
 
   // MAP AND VIEW INITIALIZATION
   const map = new Map({
@@ -104,7 +108,9 @@ require([
 // =======================
 
 function addWidgetsToMap() {
-  // Sketch Widget for drawing polygons
+  // =======================
+  // Sketch Widget
+  // =======================
   const sketch = new Sketch({
     layer: graphicsLayer,
     view: view,
@@ -112,17 +118,17 @@ function addWidgetsToMap() {
   });
   view.ui.add(sketch, "top-right");
 
-  // Move the default zoom widget to the bottom-right position
-  view.ui.move("zoom", "bottom-right");
-
-
+  // =======================
   // Search Widget
+  // =======================
   const search = new Search({
     view: view
   });
   view.ui.add(search, "bottom-right");
 
+  // =======================
   // Fullscreen Widget
+  // =======================
   const fullscreen = new Fullscreen({
     view: view
   });
@@ -139,37 +145,49 @@ function addWidgetsToMap() {
 
   const basemapGallery = new BasemapGallery({
     view: view,
-    source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid"), customBasemap] // Use standard and custom basemaps
+    source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid"), customBasemap] // Standard and custom basemaps
   });
 
-  // Create a container for the Basemap Gallery and set initial visibility to none
   const basemapGalleryDiv = document.createElement("div");
   basemapGalleryDiv.style.display = "none"; // Initially hidden
   basemapGallery.container = basemapGalleryDiv;
-  view.ui.add(basemapGalleryDiv, {
-    position: "top-right"
-  });
+  view.ui.add(basemapGalleryDiv, "top-right");
 
-  // Add a button to toggle the visibility of the Basemap Gallery
-  const basemapToggleButton = document.createElement("button");
-  basemapToggleButton.innerHTML = "🗺️ Basemaps";
-  basemapToggleButton.style.padding = "10px";
-  basemapToggleButton.style.backgroundColor = "#0079c1";
-  basemapToggleButton.style.color = "white";
-  basemapToggleButton.style.border = "none";
-  basemapToggleButton.style.cursor = "pointer";
-
-  // Toggle the visibility of the Basemap Gallery when the button is clicked
-  basemapToggleButton.addEventListener("click", function() {
-    if (basemapGalleryDiv.style.display === "none") {
-      basemapGalleryDiv.style.display = "block"; // Show the Basemap Gallery
-    } else {
-      basemapGalleryDiv.style.display = "none"; // Hide the Basemap Gallery
-    }
-  });
-
-  // Add the Basemap toggle button to the view
+  const basemapToggleButton = createToggleButton("🗺️ Basemaps", basemapGalleryDiv);
   view.ui.add(basemapToggleButton, "top-left");
+
+
+
+  // =======================
+  // Measurement Widget (Initially hidden)
+  // =======================
+  const measurement = new AreaMeasurement2D({
+    view: view
+  });
+
+  const measurementDiv = document.createElement("div");
+  measurementDiv.style.display = "none"; // Initially hidden
+  measurement.container = measurementDiv;
+  view.ui.add(measurementDiv, "top-right");
+
+  const measurementToggleButton = createToggleButton("📏 Measure", measurementDiv);
+  view.ui.add(measurementToggleButton, "top-left");
+
+  // =======================
+  // Print Widget (Initially hidden)
+  // =======================
+  const print = new Print({
+    view: view,
+    printServiceUrl: "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+  });
+
+  const printDiv = document.createElement("div");
+  printDiv.style.display = "none"; // Initially hidden
+  print.container = printDiv;
+  view.ui.add(printDiv, "top-right");
+
+  const printToggleButton = createToggleButton("🖨️ Export", printDiv);
+  view.ui.add(printToggleButton, "top-left");
 
   // =======================
   // Layer List Widget (Initially hidden)
@@ -178,37 +196,49 @@ function addWidgetsToMap() {
     view: view,
     container: document.createElement("div")
   });
+
   const layerListDiv = layerList.container;
   layerListDiv.style.display = "none"; // Initially hidden
-  layerList.container = layerListDiv;
-  view.ui.add(layerListDiv, {
-    position: "top-left"
-  });
+  view.ui.add(layerListDiv, "top-left");
 
-  // Add a button to toggle the visibility of the Layer List
-  const layerListToggleButton = document.createElement("button");
-  layerListToggleButton.innerHTML = "📋 Layers";
-  layerListToggleButton.style.padding = "10px";
-  layerListToggleButton.style.backgroundColor = "#0079c1";
-  layerListToggleButton.style.color = "white";
-  layerListToggleButton.style.border = "none";
-  layerListToggleButton.style.cursor = "pointer";
+  const layerListToggleButton = createToggleButton("📋 Layers", layerListDiv);
+  view.ui.add(layerListToggleButton, "top-left");  
 
-  // Toggle the visibility of the Layer List when the button is clicked
-  layerListToggleButton.addEventListener("click", function() {
-    if (layerListDiv.style.display === "none") {
-      layerListDiv.style.display = "block"; // Show the Layer List
+  // =======================
+  // Move the Zoom Widget to Bottom Right
+  // =======================
+  view.ui.move("zoom", "bottom-right");
+
+}
+
+// =======================
+// Helper Function to Create Toggle Buttons
+// =======================
+function createToggleButton(buttonText, targetDiv) {
+  const button = document.createElement("button");
+  button.innerHTML = buttonText;
+  button.style.padding = "10px";
+  button.style.backgroundColor = "#0079c1";
+  button.style.color = "white";
+  button.style.border = "none";
+  button.style.cursor = "pointer";
+
+  // Toggle visibility of the target div when the button is clicked
+  button.addEventListener("click", function () {
+    if (targetDiv.style.display === "none") {
+      targetDiv.style.display = "block"; // Show the widget
     } else {
-      layerListDiv.style.display = "none"; // Hide the Layer List
+      targetDiv.style.display = "none"; // Hide the widget
     }
   });
 
-  // Add the Layer List toggle button to the view
-  view.ui.add(layerListToggleButton, "top-left");
+  return button;
 }
 
 // Add widgets to the map
 addWidgetsToMap();
+
+
 
  
 
@@ -361,4 +391,38 @@ function quantifyCurrentValues(currentUse, areaInHectares) {
     });
 
 
+});
+
+document.getElementById("exportMapBtn").addEventListener("click", function() {
+  // Load jsPDF and html2canvas dynamically
+  const loadLibraries = () => {
+      const jsPDFScript = document.createElement("script");
+      jsPDFScript.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+      jsPDFScript.onload = () => {
+          const html2canvasScript = document.createElement("script");
+          html2canvasScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js";
+          html2canvasScript.onload = exportMapToPDF;
+          document.body.appendChild(html2canvasScript);
+      };
+      document.body.appendChild(jsPDFScript);
+  };
+
+  // Function to export the map as a PDF
+  function exportMapToPDF() {
+      html2canvas(document.querySelector("#viewDiv")).then(function(canvas) {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+          
+          // Add the image of the map to the PDF
+          const imgData = canvas.toDataURL("image/png");
+          doc.text("Map Snapshot", 10, 10);
+          doc.addImage(imgData, "PNG", 15, 40, 180, 160);
+          
+          // Save the PDF
+          doc.save("Map_Snapshot.pdf");
+      });
+  }
+
+  // Trigger the library loading
+  loadLibraries();
 });
