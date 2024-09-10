@@ -474,117 +474,161 @@ select {
 <div id="inputForm">
   <h3>Land Use Information</h3>
 
-  <label for="currentLandUse">Select Land Use:</label>
+  <label for="currentLandUse">Select Current Land Use:</label>
   <select id="currentLandUse">
-    <option value="agriculture">Agriculture</option>
-    <option value="forest">Forest</option>
-    <option value="urban">Urban</option>
-    <option value="wetlands">Wetlands</option>
-    <option value="invasivePlants">Invasive Plants/Overgrown</option>
-    <option value="grassLawn">Grass Lawn</option>
-    <option value="bareSoil">Bare Soil</option>
+    <option value="tropical_forest">Tropical Forest</option>
+    <option value="temperate_forest">Temperate Forest</option>
+    <option value="boreal_forest">Boreal Forest</option>
+    <option value="conventional_cropland">Conventional Cropland</option>
+    <option value="improved_cropland">Improved Cropland</option>
+    <option value="managed_grassland">Managed Grassland</option>
   </select><br><br>
 
   <label for="futureLandUse">Select Future Land Use:</label>
   <select id="futureLandUse">
-    <!-- The options will be populated dynamically via JavaScript -->
+    <option value="tropical_forest">Tropical Forest</option>
+    <option value="temperate_forest">Temperate Forest</option>
+    <option value="boreal_forest">Boreal Forest</option>
+    <option value="conventional_cropland">Conventional Cropland</option>
+    <option value="improved_cropland">Improved Cropland</option>
+    <option value="managed_grassland">Managed Grassland</option>
   </select><br><br>
 
 
-  <!-- Calculate Benefits Button on a separate line -->
+
+  <!-- Calculate Benefits Button -->
   <div style="margin-bottom: 10px;">
     <button id="calculateBtn">Find Land Use Change Impacts</button>
   </div>
 
-  <!-- New Button for Quantifying Current Land Use Values -->
+  <!-- Button for Quantifying Current Land Use Values -->
   <div style="margin-bottom: 10px;">
     <button id="quantifyBtn">Quantify Values of Existing Land Use</button>
-  </div>  
+  </div>
   <br><br>
-  <!-- Other buttons on the next line -->
+
+  <!-- Export Buttons -->
   <div>
     <button id="exportBtn">Export as CSV</button>
     <button id="exportGeoJSONBtn">Export as GeoJSON</button>
-    <button id="exportReport" style="margin-top: 10px;">Generate PDF Report</button>
   </div>
 
-  <!-- Results section -->
+
+
+
+
+
+  <!-- Results Section -->
   <div id="results">
-    <!-- This is where the calculation results will be displayed -->
+    <!-- Calculation results will be displayed here -->
+
+  <p id="sequestrationRate">Carbon Sequestration Rate: -- tons of CO₂/ha/year</p>
+
   </div>
 </div>
 
-<!-- Include JavaScript for Accordion Functionality -->
+<!-- JavaScript to Handle Dropdown Population -->
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var acc = document.getElementsByClassName("accordion");
-    var allPanels = document.getElementsByClassName("panel");
-    for (var i = 0; i < acc.length; i++) {
-      acc[i].index = i;  // Assign an index to each accordion button
-      acc[i].addEventListener("click", function() {
-        var panel = allPanels[this.index];  // Use the index to find the corresponding panel
-        this.classList.toggle("active");
-        if (panel.style.maxHeight) {
-          panel.style.maxHeight = null; // Collapse panel
-        } else {
-          // Collapse all other panels
-          for (var j = 0; j < allPanels.length; j++) {
-            allPanels[j].style.maxHeight = null;
-          }
-          panel.style.maxHeight = panel.scrollHeight + "px"; // Expand the current panel
-        }
-      });
-    }
-  });
-
-  // Shared list of land use types
-  const landUseTypes = [
-    { value: "agriculture", label: "Agriculture" },
-    { value: "forest", label: "Forest" },
-    { value: "urban", label: "Urban" },
-    { value: "wetlands", label: "Wetlands" },
-    { value: "invasivePlants", label: "Invasive Plants/Overgrown" },
-    { value: "grassLawn", label: "Grass Lawn" },
-    { value: "bareSoil", label: "Bare Soil" },
-    { value: "garden", label: "Garden" },
-    { value: "prairieMeadow", label: "Prairie/Meadow Restoration" },
-    { value: "reforestation", label: "Reforestation" }
+  // Land use types with optgroup categories and subcategories
+  const landUseOptions = [
+    { label: "Forest Land", options: [
+      { value: "tropical_forest", text: "Tropical Forest" },
+      { value: "temperate_forest", text: "Temperate Forest" },
+      { value: "boreal_forest", text: "Boreal Forest" }
+    ]},
+    { label: "Cropland", options: [
+      { value: "conventional_cropland", text: "Conventional Cropland" },
+      { value: "improved_cropland", text: "Improved Cropland" }
+    ]},
+    { label: "Grassland", options: [
+      { value: "managed_grassland", text: "Managed Grassland" },
+      { value: "degraded_grassland", text: "Degraded Grassland" }
+    ]},
+    { label: "Wetlands", options: [
+      { value: "peatland", text: "Peatland" },
+      { value: "mangrove", text: "Mangrove" }
+    ]},
+    { label: "Settlements", options: [
+      { value: "urban_green_space", text: "Urban Green Space" }
+    ]},
+    { label: "Other Land", options: [
+      { value: "other_land", text: "Other Land" }
+    ]}
   ];
 
-  // Function to populate both dropdowns
-  function populateLandUseDropdowns() {
-    const currentLandUseSelect = document.getElementById("currentLandUse");
-    const futureLandUseSelect = document.getElementById("futureLandUse");
+  // Function to populate a dropdown with the land use options
+  function populateDropdown(selectElement) {
+    // Add a default placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.textContent = "Select Land Use Type";
+    placeholderOption.disabled = true;  // Make it non-selectable
+    placeholderOption.selected = true;  // Ensure it shows by default
+    selectElement.appendChild(placeholderOption);
 
-    // Clear existing options
-    currentLandUseSelect.innerHTML = "";
-    futureLandUseSelect.innerHTML = "";
+    // Populate the dropdown with the actual land use options
+    landUseOptions.forEach(group => {
+      const optGroup = document.createElement("optgroup");
+      optGroup.label = group.label;
 
-    // Populate options for both dropdowns
-    landUseTypes.forEach(landUse => {
-      const optionCurrent = document.createElement("option");
-      optionCurrent.value = landUse.value;
-      optionCurrent.textContent = landUse.label;
+      group.options.forEach(option => {
+        const opt = document.createElement("option");
+        opt.value = option.value;
+        opt.textContent = option.text;
+        optGroup.appendChild(opt);
+      });
 
-      const optionFuture = document.createElement("option");
-      optionFuture.value = landUse.value;
-      optionFuture.textContent = landUse.label;
-
-      // Append options to both select elements
-      currentLandUseSelect.appendChild(optionCurrent);
-      futureLandUseSelect.appendChild(optionFuture);
+      selectElement.appendChild(optGroup);
     });
   }
 
-  // Call the function to populate the dropdowns when the page loads
-  document.addEventListener("DOMContentLoaded", populateLandUseDropdowns);
+  // Populate both the current and future land use dropdowns when the page loads
+  document.addEventListener("DOMContentLoaded", function() {
+    const currentLandUseSelect = document.getElementById("currentLandUse");
+    const futureLandUseSelect = document.getElementById("futureLandUse");
+
+    // Clear existing options (if any)
+    currentLandUseSelect.innerHTML = '';
+    futureLandUseSelect.innerHTML = '';
+
+    // Populate both dropdowns
+    populateDropdown(currentLandUseSelect);
+    populateDropdown(futureLandUseSelect);
+  });
 </script>
 
-<!-- Include JavaScript for Land Use Tool -->
+<!-- Link to the external JavaScript file -->
 <script src="landUseTool.js"></script>
 
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const acc = document.querySelectorAll(".accordion");
+    const allPanels = document.querySelectorAll(".panel");
+
+    acc.forEach((accordion, index) => {
+      accordion.index = index;  // Assign an index to each accordion button
+
+      accordion.addEventListener("click", function() {
+        // Toggle the current accordion
+        this.classList.toggle("active");
+
+        // Get the corresponding panel using the index
+        const panel = allPanels[this.index];
+
+        // Check if the panel is already expanded and toggle its visibility
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;  // Close the panel
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";  // Expand the panel
+        }
+      });
+    });
+  });
+</script>
+
+  
 
 </body>
 </html>
