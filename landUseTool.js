@@ -13,6 +13,7 @@ require([
   "esri/widgets/BasemapGallery",
   "esri/Basemap",
   "esri/widgets/Print"
+  
 ], function(
   Map, MapView, Sketch, GraphicsLayer, FeatureLayer, ImageryLayer, LayerList, 
   AreaMeasurement2D, Search, geometryEngine, Fullscreen, BasemapGallery, Basemap, Print
@@ -26,8 +27,8 @@ require([
   const view = new MapView({
     container: "viewDiv",
     map: map,
-    center: [-86.25, 39.77], // Center on Indiana
-    zoom: 7
+    center: [-98.57, 39.82], // Center on Indiana
+    zoom: 4
   });
 
   // =======================
@@ -40,32 +41,22 @@ require([
 
   // Function to add layers
   function addLayersToMap() {
-    // Imagery Layer
-    const imageryLayer = new ImageryLayer({
-      url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer",
-      title: "Indiana Current Imagery",
+    // Urban Heat Island Layer
+    const uhi_city_severity_2019 = new ImageryLayer({
+      url: "https://server4.tplgis.org/arcgis4/rest/services/NATIONAL/uhi_city_severity_2019/ImageServer",
+      title: "Urban Heat Island Severity 2019",
       opacity: 0.9,
-      visible: false,
+      visible: true,
       format: "jpgpng"
     });
-    map.add(imageryLayer);
-
-    // DEM Layer
-    const demLayer = new ImageryLayer({
-      url: "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_2016_2020_DEM/ImageServer",
-      title: "Indiana 2016-2020 DEM",
-      opacity: 0.8,
-      visible: false,
-      format: "jpgpng"
-    });
-    map.add(demLayer);
+    map.add(uhi_city_severity_2019);
 
     // County Boundaries Layer
     const countyBoundariesLayer = new FeatureLayer({
-      url: "https://gisdata.in.gov/server/rest/services/Hosted/County_Boundaries_of_Indiana_Current/FeatureServer",
-      title: "County Boundaries of Indiana",
+      url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_Counties/FeatureServer/0",
+      title: "US Counties",
       outFields: ["*"],
-      visible: true,
+      visible: false,
       popupTemplate: {
         title: "County: {NAME}",
         content: "County FIPS Code: {FIPS_CODE}"
@@ -73,23 +64,23 @@ require([
     });
     map.add(countyBoundariesLayer);
 
-    // Parcel Boundaries Layer
-    const parcelBoundariesLayer = new FeatureLayer({
-      url: "https://gisdata.in.gov/server/rest/services/Hosted/Parcel_Boundaries_of_Indiana_Current/FeatureServer",
-      title: "Parcel Boundaries of Indiana",
+    // Climate Planning Tract Layer
+    const Climate_Resilience_Planning_Census_Tracts = new FeatureLayer({
+      url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/Climate_Resilience_Planning_Census_Tracts/FeatureServer/0",
+      title: "Climate Resilience Census Tracts",
       outFields: ["*"],
-      visible: true,
+      visible: false,
       popupTemplate: {
-        title: "Parcel ID: {PARCEL_ID}",
+        title: "OBJECT ID: {OBJECTID}",
         content: "Area in acres: {SHAPE_Area}"
       }
     });
-    map.add(parcelBoundariesLayer);
+    map.add(Climate_Resilience_Planning_Census_Tracts);
 
-    // NHD Streams Layer
-    const nhdStreamsLayer = new FeatureLayer({
-      url: "https://gisdata.in.gov/server/rest/services/Hosted/Legacy_NHD_Rivers_Streams_etc_2008/FeatureServer/0",
-      title: "NHD Streams of Indiana",
+    // Atlas Counties
+    const AtlasCounties = new FeatureLayer({
+      url: "https://services3.arcgis.com/0Fs3HcaFfvzXvm7w/arcgis/rest/services/NCA_Atlas_Figures_Beta_Counties_view/FeatureServer/0",
+      title: "NCA Atlas Counties",
       outFields: ["*"],
       visible: false,
       popupTemplate: {
@@ -97,11 +88,74 @@ require([
         content: "Type: {FCODE}"
       }
     });
-    map.add(nhdStreamsLayer);
+    map.add(AtlasCounties);
+
+    // NLCD TCC CONUS Layer
+    const nlcdTccConusLayer = new ImageryLayer({
+      url: "https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_LandscapeAndWildlife/NLCD_TCC_CONUS/ImageServer",
+      title: "NLCD Tree Canopy Cover (CONUS)",
+      opacity: 0.8,
+      visible: false
+    });
+    map.add(nlcdTccConusLayer);
+
+    // Wetlands Map Service Layer
+    const wetlandsMapServiceLayer = new FeatureLayer({
+      url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
+      title: "USGS Wetlands",
+      outFields: ["*"],
+      visible: false,
+      popupTemplate: {
+        title: "Wetland: {ATTRIBUTE_FIELD}",
+        content: "Type: {TYPE_FIELD}"
+      }
+    });
+    map.add(wetlandsMapServiceLayer);
+
+    // County Health Rankings Layer
+    const countyHealthRankingsLayer = new FeatureLayer({
+      url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/CountyHealthRankings2020_WFL1/FeatureServer",
+      title: "County Health Rankings 2020",
+      outFields: ["*"],
+      visible: false,
+      popupTemplate: {
+        title: "County: {County}",
+        content: "Health Score: {HealthScore}"
+      }
+    });
+    map.add(countyHealthRankingsLayer);
+
+    // Air Quality Monitoring Layer
+    const airQualityMonitorLayer = new FeatureLayer({
+      url: "https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Air%20Now%20Current%20Monitor%20Data%20Public/FeatureServer",
+      title: "Air Quality Monitoring Data",
+      outFields: ["*"],
+      visible: false,
+      popupTemplate: {
+        title: "Monitoring Station: {StationName}",
+        content: "Air Quality Index: {AQI}"
+      }
+    });
+    map.add(airQualityMonitorLayer);
+
+    // Disadvantaged Tracts 2022 Layer
+    const november2022Layer = new FeatureLayer({
+      url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/usa_november_2022/FeatureServer",
+      title: "Disadvantaged Tracts 2022",
+      outFields: ["*"],
+      visible: false,
+      popupTemplate: {
+        title: "Feature: {Name}",
+        content: "Additional Info: {Description}"
+      }
+    });
+    map.add(november2022Layer);
   }
-  
-  // Add layers to the map
+
+  // Call the function to add layers to the map
   addLayersToMap();
+
+
 
 // =======================
 // WIDGET SETUP
