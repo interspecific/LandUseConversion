@@ -46,7 +46,7 @@ require([
       url: "https://server4.tplgis.org/arcgis4/rest/services/NATIONAL/uhi_city_severity_2019/ImageServer",
       title: "Urban Heat Island Severity 2019",
       opacity: 0.9,
-      visible: true,
+      visible: false,
       format: "jpgpng"
     });
     map.add(uhi_city_severity_2019);
